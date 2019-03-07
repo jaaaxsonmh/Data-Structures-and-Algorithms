@@ -1,14 +1,9 @@
+public interface Cooler {
 
-public class Cooler {
-	public final int DANGER_ZONE = 50;
-	
-	public int getCoolingFactor() {
-		return DANGER_ZONE;
-		
-	}
-	
-	public boolean isConnectedToMachine() {
-		return true;
-	}
+    public int DANGER_ZONE = 50;
 
+    public int getCoolingFactor();
+
+    public boolean isConnectedToMachine();
 }
+
