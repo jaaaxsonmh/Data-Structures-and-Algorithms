@@ -6,4 +6,3 @@ public interface Cooler {
 
     public boolean isConnectedToMachine();
 }
-

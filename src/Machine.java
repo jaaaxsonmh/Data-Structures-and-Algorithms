@@ -64,6 +64,7 @@ public class Machine {
                 this.currentTemp += random.nextInt(6);
             }
             if (this.currentTemp <= minTemp || this.currentTemp >= maxTemp) {
+                stopMachine();
                 throw new MachineTemperatureException();
             }
             try {
