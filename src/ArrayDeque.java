@@ -1,3 +1,6 @@
+package src;
+
+
 import java.util.Iterator;
 
 public class ArrayDeque<E> implements DequeADT<E> {
@@ -7,7 +10,7 @@ public class ArrayDeque<E> implements DequeADT<E> {
     @Override
     public void enqueueRear(E element) {
         E[] old = values;
-        values = (E[]) new Object[old.length+1];
+        values = (E[]) new Object[old.length + 1];
         for (int k = 0; k < old.length; k++) {
             values[k] = old[k];
         }
@@ -32,9 +35,9 @@ public class ArrayDeque<E> implements DequeADT<E> {
     @Override
     public void enqueueFront(E element) {
         E[] old = values;
-        values = (E[]) new Object[old.length+1];
+        values = (E[]) new Object[old.length + 1];
         for (int k = 0; k < old.length; k++) {
-            values[k+1] = old[k];
+            values[k + 1] = old[k];
         }
         values[0] = element;
     }

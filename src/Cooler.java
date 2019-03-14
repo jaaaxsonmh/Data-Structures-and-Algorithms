@@ -1,8 +1,10 @@
+package src;
+
 public interface Cooler {
 
-    public int DANGER_ZONE = 50;
+    int DANGER_ZONE = 50;
 
-    public int getCoolingFactor();
+    int getCoolingFactor();
 
-    public boolean isConnectedToMachine();
+    boolean isConnectedToMachine();
 }

@@ -25,8 +25,6 @@ public class BallGuiComplete extends JPanel implements ActionListener {
     public ArrayList<Ball> balls = new ArrayList<Ball>();
 
 
-
-
     public BallGuiComplete() {
         super(new BorderLayout());
 
@@ -49,11 +47,11 @@ public class BallGuiComplete extends JPanel implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         Object source = e.getSource();
         if (source == addBall) {
-        
-        	Ball ball = new Ball(drawPanel.getWidth(), drawPanel.getHeight());
-        	balls.add(ball);
-        	Thread t = new Thread(ball);
-        	t.start();
+
+            Ball ball = new Ball(drawPanel.getWidth(), drawPanel.getHeight());
+            balls.add(ball);
+            Thread t = new Thread(ball);
+            t.start();
         }
         drawPanel.repaint();  // this will invoke DrawPanel to redraw itself, (paintComponent will be called)
     }
@@ -69,9 +67,9 @@ public class BallGuiComplete extends JPanel implements ActionListener {
         @Override
         public void paintComponent(Graphics g) {
             super.paintComponent(g);
-           
-            for (Ball b: balls) {
-               b.startBall(g);
+
+            for (Ball b : balls) {
+                b.startBall(g);
             }
         }
 

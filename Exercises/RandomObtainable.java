@@ -1,7 +1,9 @@
+package Exercises;
+
 import java.util.NoSuchElementException;
 
 public interface RandomObtainable<E> {
-	public E getRandom() throws NoSuchElementException;
-	public boolean removeRandom() throws UnsupportedOperationException;
+    E getRandom() throws NoSuchElementException;
 
+    boolean removeRandom() throws UnsupportedOperationException;
 }

@@ -1,24 +1,26 @@
+package src;
+
 import java.util.Iterator;
 
 public interface DequeADT<E> {
 
-    public void enqueueRear(E element);
+    void enqueueRear(E element);
 
-    public E dequeueFront();
+    E dequeueFront();
 
-    public E first();
+    E first();
 
-    public void enqueueFront(E element);
+    void enqueueFront(E element);
 
-    public E dequeueRear();
+    E dequeueRear();
 
-    public E last();
+    E last();
 
-    public boolean isEmpty();
+    boolean isEmpty();
 
-    public Iterator<E> iterator();
+    Iterator<E> iterator();
 
-    public void clear();
+    void clear();
 
-    public int size();
+    int size();
 }
