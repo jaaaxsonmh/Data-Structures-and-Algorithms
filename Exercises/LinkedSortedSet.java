@@ -5,6 +5,9 @@ import java.util.ListIterator;
 
 public class LinkedSortedSet<E extends Comparable<E>> extends LinkedList<E> {
 
+    private static final long serialVersionUID = 1L;
+
+
     public boolean add(E element) {
         ListIterator<E> itr = listIterator();
         while(true) {
@@ -25,54 +28,29 @@ public class LinkedSortedSet<E extends Comparable<E>> extends LinkedList<E> {
     }
 
     public static void main(String[] args) {
-        LinkedSortedSet<String> list = new LinkedSortedSet<>();
-
-
-        // For integer
-//        System.out.println("Current: " + list);
-//
-//        list.add(10);
-//        System.out.println("Current: " + list);
-//
-//        list.add(50);
-//        System.out.println("Current: " + list);
-//
-//        list.add(30);
-//        System.out.println("Current: " + list);
-//
-//        list.add(90);
-//        System.out.println("Current: " + list);
-//
-//        list.add(1);
-//        System.out.println("Current: " + list);
-//
-//        list.add(60);
-//        System.out.println("Current: " + list);
-//
-//        list.add(1000);
+        LinkedSortedSet<Integer> list = new LinkedSortedSet<>();
 
         System.out.println("Current: " + list);
 
-        list.add("Jack");
+        list.add(10);
         System.out.println("Current: " + list);
 
-        list.add("A");
+        list.add(50);
         System.out.println("Current: " + list);
 
-        list.add("C");
+        list.add(30);
         System.out.println("Current: " + list);
 
-        list.add("Hosking");
+        list.add(90);
         System.out.println("Current: " + list);
 
-        list.add("Me");
+        list.add(1);
         System.out.println("Current: " + list);
 
-        list.add("Z");
+        list.add(60);
         System.out.println("Current: " + list);
 
-        list.add("end");
+        list.add(1000);
         System.out.println("After: " + list);
-
     }
 }
