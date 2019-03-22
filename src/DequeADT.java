@@ -12,7 +12,7 @@ public interface DequeADT<E> {
 
     void enqueueFront(E element);
 
-    E dequeueRear();
+    void dequeueRear();
 
     E last();
 

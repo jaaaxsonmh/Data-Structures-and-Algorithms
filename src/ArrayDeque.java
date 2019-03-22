@@ -17,7 +17,6 @@ public class ArrayDeque<E> implements DequeADT<E> {
         values[values.length - 1] = element;
     }
 
-
     @Override
     public E dequeueFront() {
         if (isEmpty()) {
@@ -43,7 +42,7 @@ public class ArrayDeque<E> implements DequeADT<E> {
     }
 
     @Override
-    public E dequeueRear() {
+    public void dequeueRear() {
         if (isEmpty()) {
             throw new RuntimeException("Queue Underflow.");
         }
@@ -53,7 +52,6 @@ public class ArrayDeque<E> implements DequeADT<E> {
         for (int k = 0; k < values.length; k++) {
             values[k] = old[k];
         }
-        return value;
     }
 
     @Override
@@ -62,7 +60,6 @@ public class ArrayDeque<E> implements DequeADT<E> {
         if (isEmpty()) {
             throw new RuntimeException("Queue Underflow.");
         }
-
         return values[0];
     }
 

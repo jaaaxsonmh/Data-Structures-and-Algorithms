@@ -58,7 +58,7 @@ public class LinkedDeque<E> implements DequeADT<E> {
     }
 
     @Override
-    public E dequeueRear() {
+    public void dequeueRear() {
         if (isEmpty()) {
             throw new RuntimeException("Queue Underflow.");
         }
@@ -71,7 +71,6 @@ public class LinkedDeque<E> implements DequeADT<E> {
         } else {
             this.rear.setNext(null);
         }
-        return value;
     }
 
     @Override

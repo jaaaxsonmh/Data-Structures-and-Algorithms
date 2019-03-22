@@ -2,76 +2,81 @@ package src;
 
 import java.util.Random;
 
-public class Machine {
+public class Machine{
 
-    private static Random random = new Random();
+    private static Random	random	= new Random();
 
-    private boolean isRunning;
-    private int minTemp, maxTemp, currentTemp = 22;
-    private Cooler connectedCooler;
+    private boolean			isRunning;
+    private int				minTemp, maxTemp, currentTemp = 66;
+    private Cooler			connectedCooler;
 
-    public Machine(int minTemp, int maxTemp) {
+    public Machine(int minTemp, int maxTemp){
         this.minTemp = minTemp;
         this.maxTemp = maxTemp;
     }
 
-    public void startMachine() {
-        if (!this.isRunning) {
+    public void startMachine(){
+        if(!this.isRunning){
             this.isRunning = true;
             new Thread(() -> run()).start();
         }
     }
 
-    public boolean isRunning() {
+    public boolean isRunning(){
         return this.isRunning;
     }
 
-    public void stopMachine() {
+    public void stopMachine(){
         this.isRunning = false;
     }
 
-    public int getCurrentTemp() {
-        return this.getCurrentTemp();
+    public int getCurrentTemp(){
+        return this.currentTemp;
     }
 
-    public int getMinTemp() {
+    public int getMinTemp(){
         return this.minTemp;
     }
 
-    public int getMaxTemp() {
+    public int getMaxTemp(){
         return this.maxTemp;
     }
 
-    public boolean connectCooler(Cooler cooler) {
-        if (this.connectedCooler == null) {
+    public boolean connectCooler(Cooler cooler){
+        if(this.connectedCooler == null){
             this.connectedCooler = cooler;
             return true;
         }
         return false;
     }
 
-    public boolean isCoolerConnected() {
+    public boolean isCoolerConnected(){
         return connectedCooler != null;
     }
 
-    public void disconnectCooler() {
+    public void disconnectCooler(){
         this.connectedCooler = null;
     }
 
-    public void run() {
-        while (this.isRunning) {
-            if (connectedCooler != null) {
+    public void run(){
+        while(this.isRunning){
+            if(connectedCooler != null){
                 this.currentTemp -= connectedCooler.getCoolingFactor();
-            } else {
+            }else{
                 this.currentTemp += random.nextInt(6);
             }
-            if (this.currentTemp <= minTemp || this.currentTemp >= maxTemp) {
-                stopMachine();
-                throw new MachineTemperatureException();
+            System.out.println("Machine: " + this.currentTemp + " : " + this.minTemp + " : " + this.maxTemp);
+            if(this.currentTemp <= minTemp || this.currentTemp >= maxTemp){
+                try {
+                    throw new MachineTemperatureException();
+                } catch (MachineTemperatureException e){
+                    stopMachine();
+                }
             }
-            try {
+
+            try{
                 Thread.sleep(200);
-            } catch (Exception e) {
+            }catch(Exception e){
                 e.printStackTrace();
             }
         }

@@ -36,7 +36,6 @@ public class SelectiveSort {
             System.out.print(arr[i] + " ");
         }
         System.out.println();
-
     }
 
     private void sort(int[] arr) {
