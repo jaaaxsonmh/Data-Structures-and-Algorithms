@@ -67,11 +67,9 @@ public class Machine{
             }
             System.out.println("Machine: " + this.currentTemp + " : " + this.minTemp + " : " + this.maxTemp);
             if(this.currentTemp <= minTemp || this.currentTemp >= maxTemp){
-                try {
+
                     throw new MachineTemperatureException();
-                } catch (MachineTemperatureException e){
-                    stopMachine();
-                }
+
             }
 
             try{
