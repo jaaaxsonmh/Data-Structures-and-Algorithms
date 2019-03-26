@@ -52,11 +52,11 @@ public class FactoryControlGUI extends JPanel implements ActionListener {
 
         add(buttonPanel, BorderLayout.SOUTH);
 
-        for(int i = 0; i <= MAX_MACHINES; i++) {
+        for (int i = 0; i <= MAX_MACHINES; i++) {
             machines.add(new Machine(0, 250));
         }
 
-        for(int i = 1; i <= MAX_COOLERS; i++) {
+        for (int i = 1; i <= MAX_COOLERS; i++) {
             coolers.add(new MonitoringCooler(machines, 25));
         }
 
@@ -64,13 +64,23 @@ public class FactoryControlGUI extends JPanel implements ActionListener {
         timer.start();
     }
 
+    public void init() {
+        for (int i = 0; i <= MAX_MACHINES; i++) {
+            machines.add(new Machine(0, 250));
+        }
+
+        for (int i = 1; i <= MAX_COOLERS; i++) {
+            coolers.add(new MonitoringCooler(machines, 25));
+        }
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
         Object source = e.getSource();
 
-
         if (source == startMachines) {
-            for(Machine m : machines) {
+
+            for (Machine m : machines) {
                 m.startMachine();
             }
 
@@ -79,8 +89,8 @@ public class FactoryControlGUI extends JPanel implements ActionListener {
             }
         }
 
-        if(source == stopMachines) {
-            for(Machine m : machines) {
+        if (source == stopMachines) {
+            for (Machine m : machines) {
                 m.stopMachine();
             }
 
@@ -89,23 +99,10 @@ public class FactoryControlGUI extends JPanel implements ActionListener {
             }
         }
 
-        if(source == resetMachines) {
-
-
+        if (source == resetMachines) {
+            // avoid remove-self, and concurrentmodification (if refactored for iteration
             for(Machine m : machines) {
-                m.stopMachine();
-            }
-
-            for (MonitoringCooler cooler : coolers) {
-                cooler.requestStop();
-            }
-
-            // avoid remove-self, and concurrentmodification (if refactored for iteration)
-            toRemove.addAll(machines);
-            machines.removeAll(toRemove);
-
-            for(int i = 0; i <= MAX_MACHINES; i++) {
-                machines.add(new Machine(0, 250));
+                m.isResetMachine();
             }
         }
         drawPanel.repaint();  // this will invoke DrawPanel to redraw itself, (paintComponent will be called)
@@ -114,24 +111,24 @@ public class FactoryControlGUI extends JPanel implements ActionListener {
     public void drawTempLines(Graphics g) {
         g.setColor(Color.black);
         g.drawLine(X_1, TOTAL_ZONE, X_2, TOTAL_ZONE);
-        g.drawString("0", X_2 +  5, TOTAL_ZONE);
+        g.drawString("0", X_2 + 5, TOTAL_ZONE);
 
         g.setColor(Color.blue);
         g.drawLine(X_1, OPTIMAL_ZONE_MAX, X_2, OPTIMAL_ZONE_MAX);
-        g.drawString("50", X_2 +  5, OPTIMAL_ZONE_MAX);
+        g.drawString("50", X_2 + 5, OPTIMAL_ZONE_MAX);
 
         g.setColor(Color.black);
         g.drawLine(X_1, OPTIMAL_ZONE_MAX - OPTIMAL_ZONE_MIN, X_2, OPTIMAL_ZONE_MAX - OPTIMAL_ZONE_MIN);
-        g.drawString("125", X_2 +  5, OPTIMAL_ZONE_MAX - OPTIMAL_ZONE_MIN);
+        g.drawString("125", X_2 + 5, OPTIMAL_ZONE_MAX - OPTIMAL_ZONE_MIN);
 
         g.setColor(Color.red);
         g.drawLine(X_1, OPTIMAL_ZONE_MIN, X_2, OPTIMAL_ZONE_MIN);
-        g.drawString("200", X_2 +  5, OPTIMAL_ZONE_MIN);
+        g.drawString("200", X_2 + 5, OPTIMAL_ZONE_MIN);
 
 
         g.setColor(Color.black);
         g.drawLine(X_1, 40, X_2, 40);
-        g.drawString("250", X_2 +  5, 40);
+        g.drawString("250", X_2 + 5, 40);
     }
 
 
@@ -146,18 +143,16 @@ public class FactoryControlGUI extends JPanel implements ActionListener {
         @Override
         public void paintComponent(Graphics g) {
             super.paintComponent(g);
-
             int rect_x = 10;
-
             g.setFont(new Font("TimesRoman", Font.PLAIN, 24));
 
             drawTempLines(g);
             for (Machine m : machines) {
                 int currentTemp = TOTAL_ZONE - (m.getCurrentTemp() * 2);
 
-                if(currentTemp <= TOTAL_ZONE && currentTemp > OPTIMAL_ZONE_MAX) {
+                if (currentTemp <= TOTAL_ZONE && currentTemp > OPTIMAL_ZONE_MAX) {
                     g.setColor(Color.blue);
-                } else if (currentTemp <= OPTIMAL_ZONE_MAX && currentTemp > OPTIMAL_ZONE_MIN){
+                } else if (currentTemp <= OPTIMAL_ZONE_MAX && currentTemp > OPTIMAL_ZONE_MIN) {
                     // optimal temperature
                     g.setColor(Color.orange);
                 } else if (currentTemp <= OPTIMAL_ZONE_MIN && currentTemp > 40) {
@@ -166,9 +161,9 @@ public class FactoryControlGUI extends JPanel implements ActionListener {
                     g.setColor(Color.black);
                 }
 
-                g.fillRect(rect_x, currentTemp, RECT_WIDTH,  m.getCurrentTemp() * 2);
+                g.fillRect(rect_x, currentTemp, RECT_WIDTH, m.getCurrentTemp() * 2);
 
-                if(m.isCoolerConnected()) {
+                if (m.isCoolerConnected()) {
                     g.setColor(Color.red);
                     g.drawString("X", rect_x + 5, TOTAL_ZONE + 20);
                 } else {

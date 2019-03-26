@@ -8,7 +8,6 @@ public class MonitoringCooler implements Cooler, Runnable {
     private int coolingFactor;
     private boolean isRunning;
     private Machine connected;
-    private static final int DANGER_ZONE = 50;
 
     public MonitoringCooler(Collection<Machine> machines, int coolingFactor) {
         this.machines = machines;
@@ -16,14 +15,13 @@ public class MonitoringCooler implements Cooler, Runnable {
     }
 
     @Override
-    public synchronized void run() {
+    public void run() {
         while (this.isRunning) {
-
             // connect criteria
             for (Machine machine : machines) {
                 if (machine.isRunning()) {
                     if (!machine.isCoolerConnected()) {
-                        if (machine.getCurrentTemp() > machine.getMaxTemp() - DANGER_ZONE) {
+                        if (machine.getCurrentTemp() >= machine.getMaxTemp() - DANGER_ZONE) {
                             if (machine.connectCooler(this)) {
                                 connected = machine;
                                 break;
@@ -36,7 +34,7 @@ public class MonitoringCooler implements Cooler, Runnable {
             //disconnect criteria
             while (connected != null) {
 
-                if (connected.getCurrentTemp() < connected.getMinTemp() + DANGER_ZONE ||connected.getCurrentTemp() >= connected.getMaxTemp()) {
+                if (connected.getCurrentTemp() < connected.getMinTemp() + DANGER_ZONE || connected.getCurrentTemp() >= connected.getMaxTemp() || connected.getCurrentTemp() < connected.getMinTemp()) {
                     connected.disconnectCooler();
                     connected = null;
                 }
