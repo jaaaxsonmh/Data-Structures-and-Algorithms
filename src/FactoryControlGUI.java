@@ -1,10 +1,6 @@
 package src;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Toolkit;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -14,19 +10,24 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.Timer;
-import javax.swing.plaf.ColorUIResource;
 
 public class FactoryControlGUI extends JPanel implements ActionListener {
 
-    private JButton startMachines, stopMachines;
+    private JButton startMachines, stopMachines, resetMachines;
     private DrawPanel drawPanel;
 
 
     private static final int MAX_MACHINES = 20;
-    private static final int MAX_COOLERS = 4;
-    private int                rect_x = 20;
+    private static final int MAX_COOLERS = 3;
+    private static final int RECT_WIDTH = 20;
+    private static final int OPTIMAL_ZONE_MIN = 140;
+    private static final int OPTIMAL_ZONE_MAX = 440;
+    private static final int TOTAL_ZONE = 540;
+    private static final int X_1 = 10, X_2 = 750;
+
 
     private List<Machine> machines = new ArrayList<>();
+    private List<Machine> toRemove = new ArrayList<>();
     private List<MonitoringCooler> coolers = new ArrayList<>();
 
 
@@ -45,51 +46,92 @@ public class FactoryControlGUI extends JPanel implements ActionListener {
         stopMachines.addActionListener(this);
         buttonPanel.add(stopMachines);
 
+        resetMachines = new JButton("Reset Machines");
+        resetMachines.addActionListener(this);
+        buttonPanel.add(resetMachines);
+
         add(buttonPanel, BorderLayout.SOUTH);
 
-        // call actionPerformed method every 25 using Swing timer
-        // you can use this to update your GUI
-        Timer timer = new Timer(25, this);
+        for(int i = 0; i <= MAX_MACHINES; i++) {
+            machines.add(new Machine(0, 250));
+        }
+
+        for(int i = 1; i <= MAX_COOLERS; i++) {
+            coolers.add(new MonitoringCooler(machines, 25));
+        }
+
+        Timer timer = new Timer(5, this);
         timer.start();
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         Object source = e.getSource();
-        if (source == startMachines) {
-//            for(int i = 0; i <= MAX_MACHINES; i++) {
-//                machines.add(new Machine(50, 200));
-//            }
-//
-//            for(int i = 0; i <= MAX_COOLERS; i++) {
-//                coolers.add(new MonitoringCooler(machines, 25));
-//            }
 
-            machines.add(new Machine(50, 250));
-            //coolers.add(new MonitoringCooler(machines, 25));
+
+        if (source == startMachines) {
+            for(Machine m : machines) {
+                m.startMachine();
+            }
+
+            for (MonitoringCooler cooler : coolers) {
+                cooler.startCooler();
+            }
         }
 
         if(source == stopMachines) {
+            for(Machine m : machines) {
+                m.stopMachine();
+            }
 
+            for (MonitoringCooler cooler : coolers) {
+                cooler.requestStop();
+            }
+        }
+
+        if(source == resetMachines) {
+
+
+            for(Machine m : machines) {
+                m.stopMachine();
+            }
+
+            for (MonitoringCooler cooler : coolers) {
+                cooler.requestStop();
+            }
+
+            // avoid remove-self, and concurrentmodification (if refactored for iteration)
+            toRemove.addAll(machines);
+            machines.removeAll(toRemove);
+
+            for(int i = 0; i <= MAX_MACHINES; i++) {
+                machines.add(new Machine(0, 250));
+            }
         }
         drawPanel.repaint();  // this will invoke DrawPanel to redraw itself, (paintComponent will be called)
     }
 
     public void drawTempLines(Graphics g) {
         g.setColor(Color.black);
-        g.drawLine(0, 600, 650, 600);
+        g.drawLine(X_1, TOTAL_ZONE, X_2, TOTAL_ZONE);
+        g.drawString("0", X_2 +  5, TOTAL_ZONE);
 
         g.setColor(Color.blue);
-        g.drawLine(0, 450, 650, 450);
-
-        g.setColor(Color.orange);
-        g.drawLine(0, 300, 650, 300);
-
-        g.setColor(Color.red);
-        g.drawLine(0, 150, 650, 150);
+        g.drawLine(X_1, OPTIMAL_ZONE_MAX, X_2, OPTIMAL_ZONE_MAX);
+        g.drawString("50", X_2 +  5, OPTIMAL_ZONE_MAX);
 
         g.setColor(Color.black);
-        g.drawLine(0, 50, 650, 50);
+        g.drawLine(X_1, OPTIMAL_ZONE_MAX - OPTIMAL_ZONE_MIN, X_2, OPTIMAL_ZONE_MAX - OPTIMAL_ZONE_MIN);
+        g.drawString("125", X_2 +  5, OPTIMAL_ZONE_MAX - OPTIMAL_ZONE_MIN);
+
+        g.setColor(Color.red);
+        g.drawLine(X_1, OPTIMAL_ZONE_MIN, X_2, OPTIMAL_ZONE_MIN);
+        g.drawString("200", X_2 +  5, OPTIMAL_ZONE_MIN);
+
+
+        g.setColor(Color.black);
+        g.drawLine(X_1, 40, X_2, 40);
+        g.drawString("250", X_2 +  5, 40);
     }
 
 
@@ -97,7 +139,7 @@ public class FactoryControlGUI extends JPanel implements ActionListener {
 
         public DrawPanel() {
             super();
-            setPreferredSize(new Dimension(650, 650));
+            setPreferredSize(new Dimension(800, 600));
             setBackground(Color.WHITE);
         }
 
@@ -105,26 +147,36 @@ public class FactoryControlGUI extends JPanel implements ActionListener {
         public void paintComponent(Graphics g) {
             super.paintComponent(g);
 
+            int rect_x = 10;
+
+            g.setFont(new Font("TimesRoman", Font.PLAIN, 24));
+
             drawTempLines(g);
             for (Machine m : machines) {
-                m.startMachine();
-                int currentTemp = 650 - (m.getCurrentTemp() * 2);
-                int rect_width = 20;
+                int currentTemp = TOTAL_ZONE - (m.getCurrentTemp() * 2);
 
-                if(currentTemp <= 550 && currentTemp > 450) {
+                if(currentTemp <= TOTAL_ZONE && currentTemp > OPTIMAL_ZONE_MAX) {
                     g.setColor(Color.blue);
-                } else if (currentTemp <= 450 && currentTemp > 300){
+                } else if (currentTemp <= OPTIMAL_ZONE_MAX && currentTemp > OPTIMAL_ZONE_MIN){
+                    // optimal temperature
                     g.setColor(Color.orange);
-                } else if (currentTemp <= 300 && currentTemp > 150) {
+                } else if (currentTemp <= OPTIMAL_ZONE_MIN && currentTemp > 40) {
                     g.setColor(Color.red);
                 } else {
                     g.setColor(Color.black);
                 }
-                g.fillRect(rect_x, currentTemp, rect_width,  m.getCurrentTemp() * 2);
-            }
 
-            for (MonitoringCooler cooler : coolers) {
-                cooler.startCooler();
+                g.fillRect(rect_x, currentTemp, RECT_WIDTH,  m.getCurrentTemp() * 2);
+
+                if(m.isCoolerConnected()) {
+                    g.setColor(Color.red);
+                    g.drawString("X", rect_x + 5, TOTAL_ZONE + 20);
+                } else {
+                    g.setColor(Color.blue);
+                    g.drawString("-", rect_x + 5, TOTAL_ZONE + 20);
+                }
+
+                rect_x += 35;
             }
         }
     }
