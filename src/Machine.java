@@ -6,7 +6,7 @@ public class Machine {
 
     private static Random random = new Random();
 
-    private boolean isRunning, resetMachine = false;
+    private boolean isRunning;
     private int minTemp, maxTemp;
     private int currentTemp = 22;
     private Cooler connectedCooler;

@@ -55,7 +55,6 @@ public class FactoryControlGUI extends JPanel implements ActionListener {
             coolers.add(new MonitoringCooler(machines, 25));
         }
 
-
         Timer timer = new Timer(25, this);
         timer.start();
     }
