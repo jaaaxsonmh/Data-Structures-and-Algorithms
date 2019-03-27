@@ -23,6 +23,7 @@ public class MonitoringCooler implements Cooler, Runnable {
                     if (!machine.isCoolerConnected()) {
                         if (machine.getCurrentTemp() >= machine.getMaxTemp() - DANGER_ZONE) {
                             if (machine.connectCooler(this)) {
+                                System.out.println("CONNECTING COOLER");
                                 connected = machine;
                                 break;
                             }
@@ -33,8 +34,8 @@ public class MonitoringCooler implements Cooler, Runnable {
 
             //disconnect criteria
             while (connected != null) {
-
                 if (connected.getCurrentTemp() < connected.getMinTemp() + DANGER_ZONE || connected.getCurrentTemp() >= connected.getMaxTemp() || connected.getCurrentTemp() < connected.getMinTemp()) {
+                    System.out.println("DISCONNECTING COOLER");
                     connected.disconnectCooler();
                     connected = null;
                 }

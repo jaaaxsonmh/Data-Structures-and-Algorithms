@@ -47,11 +47,11 @@ public class FactoryControlGUI extends JPanel implements ActionListener {
 
         add(buttonPanel, BorderLayout.SOUTH);
 
-        for (int i = 0; i <= MAX_MACHINES; i++) {
+        for (int i = 0; i < MAX_MACHINES; i++) {
             machines.add(new Machine(0, 250));
         }
 
-        for (int i = 1; i <= MAX_COOLERS; i++) {
+        for (int i = 0; i < MAX_COOLERS; i++) {
             coolers.add(new MonitoringCooler(machines, 25));
         }
 
@@ -64,7 +64,9 @@ public class FactoryControlGUI extends JPanel implements ActionListener {
         Object source = e.getSource();
 
         if (source == startMachines) {
-
+            System.out.println("Current number of machines: " + machines.size());
+            System.out.println("Current number of coolers:" + coolers.size());
+            System.out.println("Starting to monitor their temperatures...");
             for (Machine m : machines) {
                 if(m.getCurrentTemp() < m.getMaxTemp() && m.getCurrentTemp() > m.getMinTemp()){
                     m.startMachine();
@@ -78,6 +80,7 @@ public class FactoryControlGUI extends JPanel implements ActionListener {
         }
 
         if (source == stopMachines) {
+            System.out.println("HAULTING MACHINES");
             for (Machine m : machines) {
                 m.stopMachine();
             }
@@ -143,7 +146,7 @@ public class FactoryControlGUI extends JPanel implements ActionListener {
 
                 if (m.isCoolerConnected()) {
                     g.setColor(Color.red);
-                    g.drawString("X", rect_x + 5, TOTAL_ZONE + 20);
+                    g.drawString("+", rect_x + 5, TOTAL_ZONE + 20);
                 } else {
                     g.setColor(Color.blue);
                     g.drawString("-", rect_x + 5, TOTAL_ZONE + 20);

@@ -67,9 +67,11 @@ public class Machine {
             } else {
                 this.currentTemp += random.nextInt(6);
             }
-            System.out.println("Machine: " + this.currentTemp + " : " + this.minTemp + " : " + this.maxTemp);
+            // this is just spam
+            // System.out.println("Machine: " + this.currentTemp + " : " + this.minTemp + " : " + this.maxTemp);
             if (this.currentTemp <= minTemp || this.currentTemp >= maxTemp) {
                 this.isRunning = false;
+                System.out.println("MACHINE OVERHEATED AND DIED.");
                 throw new MachineTemperatureException();
             }
             try {
