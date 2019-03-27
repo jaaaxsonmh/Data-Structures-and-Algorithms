@@ -44,14 +44,6 @@ public class Machine {
         return this.maxTemp;
     }
 
-    public int resetMachine() {
-        return this.currentTemp = 22;
-    }
-
-    public boolean isResetMachine() {
-        return !this.resetMachine;
-    }
-
     public boolean connectCooler(Cooler cooler) {
         if (this.connectedCooler == null) {
             this.connectedCooler = cooler;
