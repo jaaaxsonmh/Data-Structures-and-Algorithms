@@ -52,7 +52,6 @@ public class BracketPairs {
                     return false;
                 }
 
-
                 //if stack has values then the previous value has to match the current value bracket - pairs: () {} <> []
                 char prev = stack.peek();
                 if(prev == '(' && current == ')' || prev == '{' && current == '}' || prev == '<' && current == '>' || prev == '[' && current == ']') {
@@ -62,6 +61,8 @@ public class BracketPairs {
                 }
             }
         }
+        //things can be left in the stack if they dont have matching pairs they wont be popped, so its only true when stack is empty
+        //otherwise is false
         return stack.isEmpty();
     }
 }
