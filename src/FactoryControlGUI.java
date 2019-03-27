@@ -13,7 +13,7 @@ import javax.swing.Timer;
 
 public class FactoryControlGUI extends JPanel implements ActionListener {
 
-    private JButton startMachines, stopMachines, resetMachines;
+    private JButton startMachines, stopMachines;
     private DrawPanel drawPanel;
 
 
@@ -27,7 +27,6 @@ public class FactoryControlGUI extends JPanel implements ActionListener {
 
 
     private List<Machine> machines = new ArrayList<>();
-    private List<Machine> toRemove = new ArrayList<>();
     private List<MonitoringCooler> coolers = new ArrayList<>();
 
 
@@ -46,10 +45,6 @@ public class FactoryControlGUI extends JPanel implements ActionListener {
         stopMachines.addActionListener(this);
         buttonPanel.add(stopMachines);
 
-        resetMachines = new JButton("Reset Machines");
-        resetMachines.addActionListener(this);
-        buttonPanel.add(resetMachines);
-
         add(buttonPanel, BorderLayout.SOUTH);
 
         for (int i = 0; i <= MAX_MACHINES; i++) {
@@ -60,18 +55,8 @@ public class FactoryControlGUI extends JPanel implements ActionListener {
             coolers.add(new MonitoringCooler(machines, 25));
         }
 
-        Timer timer = new Timer(5, this);
+        Timer timer = new Timer(25, this);
         timer.start();
-    }
-
-    public void init() {
-        for (int i = 0; i <= MAX_MACHINES; i++) {
-            machines.add(new Machine(0, 250));
-        }
-
-        for (int i = 1; i <= MAX_COOLERS; i++) {
-            coolers.add(new MonitoringCooler(machines, 25));
-        }
     }
 
     @Override
@@ -96,13 +81,6 @@ public class FactoryControlGUI extends JPanel implements ActionListener {
 
             for (MonitoringCooler cooler : coolers) {
                 cooler.requestStop();
-            }
-        }
-
-        if (source == resetMachines) {
-            // avoid remove-self, and concurrentmodification (if refactored for iteration
-            for(Machine m : machines) {
-                m.isResetMachine();
             }
         }
         drawPanel.repaint();  // this will invoke DrawPanel to redraw itself, (paintComponent will be called)

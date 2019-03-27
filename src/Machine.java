@@ -80,9 +80,6 @@ public class Machine {
                 this.isRunning = false;
                 throw new MachineTemperatureException();
             }
-            if(resetMachine) {
-                this.currentTemp = resetMachine();
-            }
             try {
                 Thread.sleep(200);
             } catch (Exception e) {
