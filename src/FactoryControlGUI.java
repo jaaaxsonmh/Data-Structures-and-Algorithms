@@ -55,6 +55,7 @@ public class FactoryControlGUI extends JPanel implements ActionListener {
             coolers.add(new MonitoringCooler(machines, 25));
         }
 
+
         Timer timer = new Timer(25, this);
         timer.start();
     }
@@ -69,6 +70,7 @@ public class FactoryControlGUI extends JPanel implements ActionListener {
                 m.startMachine();
             }
 
+            //coolers can be started here, or in the factorycontrolgui
             for (MonitoringCooler cooler : coolers) {
                 cooler.startCooler();
             }
@@ -78,12 +80,8 @@ public class FactoryControlGUI extends JPanel implements ActionListener {
             for (Machine m : machines) {
                 m.stopMachine();
             }
-
-            for (MonitoringCooler cooler : coolers) {
-                cooler.requestStop();
-            }
         }
-        drawPanel.repaint();  // this will invoke DrawPanel to redraw itself, (paintComponent will be called)
+        drawPanel.repaint();
     }
 
     public void drawTempLines(Graphics g) {
@@ -125,6 +123,7 @@ public class FactoryControlGUI extends JPanel implements ActionListener {
             g.setFont(new Font("TimesRoman", Font.PLAIN, 24));
 
             drawTempLines(g);
+
             for (Machine m : machines) {
                 int currentTemp = TOTAL_ZONE - (m.getCurrentTemp() * 2);
 
