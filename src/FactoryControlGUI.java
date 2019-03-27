@@ -66,7 +66,9 @@ public class FactoryControlGUI extends JPanel implements ActionListener {
         if (source == startMachines) {
 
             for (Machine m : machines) {
-                m.startMachine();
+                if(m.getCurrentTemp() < m.getMaxTemp() && m.getCurrentTemp() > m.getMinTemp()){
+                    m.startMachine();
+                }
             }
 
             //coolers can be started here, or in the factorycontrolgui
