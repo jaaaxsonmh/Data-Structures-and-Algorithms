@@ -10,7 +10,9 @@ import java.util.Iterator;
 public class DequeTest {
 
     public static void main(String[] args) {
-        ArrayDeque<String> deque = new ArrayDeque<>();
+        // just un-code comment depending on which deque you want to test
+        //  ArrayDeque<String> deque = new ArrayDeque<>();
+        LinkedDeque<String> deque = new LinkedDeque<>();
 
         deque.enqueueFront("A");
         deque.enqueueFront("S");
