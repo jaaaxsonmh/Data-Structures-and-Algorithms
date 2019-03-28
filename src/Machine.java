@@ -57,11 +57,11 @@ public class Machine {
         return false;
     }
 
-    public boolean isCoolerConnected() {
+    public synchronized boolean isCoolerConnected() {
         return connectedCooler != null;
     }
 
-    public void disconnectCooler() {
+    public synchronized void disconnectCooler() {
         this.connectedCooler = null;
     }
 
