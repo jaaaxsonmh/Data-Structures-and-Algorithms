@@ -34,7 +34,7 @@ public class ArrayStackButBetter<E> implements StackADT<E> {
     // removes and returns the top element from this stack
     public E pop() throws NoSuchElementException {
         if (size > 0) {
-            E bottom = elements[size - 1];
+            E bottom = elements[elements.length - size + 1];
             elements[size - 1] = null;
             size--;
             return bottom;
