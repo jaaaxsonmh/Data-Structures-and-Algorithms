@@ -1,5 +1,10 @@
 package src;
 
+/*
+ * author Jack Hosking
+ * Student ID: 16932920
+ */
+
 public interface Cooler {
 
     int DANGER_ZONE = 50;

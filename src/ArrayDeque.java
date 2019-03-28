@@ -1,5 +1,9 @@
 package src;
 
+/*
+ * author Jack Hosking
+ * Student ID: 16932920
+ */
 
 import java.util.Iterator;
 

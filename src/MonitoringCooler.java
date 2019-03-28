@@ -1,6 +1,12 @@
 package src;
 
+/*
+ * author Jack Hosking
+ * Student ID: 16932920
+ */
+
 import java.util.Collection;
+
 
 public class MonitoringCooler implements Cooler, Runnable {
 
