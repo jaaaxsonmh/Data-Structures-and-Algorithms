@@ -20,34 +20,45 @@ public class ArrayStackButBetter<E> implements StackADT<E> {
     // initially holds the elements in the collection c
     public ArrayStackButBetter(Collection<? extends E> c) {
         this();
-        for (E element : c)
+        for (E element : c) {
             push(element);
+        }
     }
 
     // Adds one element to the top of this stack
     public void push(E element) {
-        if (size >= elements.length)
+        if (size >= elements.length) {
             expandCapacity();
-        elements[size++] = element;
+        }
+        for (int i = size; i > 0; i--) {
+            elements[i] = elements[i - 1];
+        }
+        elements[0] = element;
+        size++;
     }
 
     // removes and returns the top element from this stack
     public E pop() throws NoSuchElementException {
         if (size > 0) {
-            E bottom = elements[elements.length - size + 1];
-            elements[size - 1] = null;
+            for (int i = 0; i < size; i++) {
+                elements[i] = elements[i + 1];
+            }
+            E bottom = elements[0];
+            elements[0] = null;
             size--;
             return bottom;
-        } else
+        } else {
             throw new NoSuchElementException();
+        }
     }
 
     // returns without removing the top element of this stack
     public E peek() throws NoSuchElementException {
-        if (size > 0)
+        if (size > 0) {
             return elements[size - 1];
-        else
+        } else {
             throw new NoSuchElementException();
+        }
     }
 
     // returns true if this stack contains no elements
@@ -65,8 +76,9 @@ public class ArrayStackButBetter<E> implements StackADT<E> {
         String output = "[";
         for (int i = size - 1; i >= 0; i--) {
             output += elements[i];
-            if (i > 0)
+            if (i > 0) {
                 output += ",";
+            }
         }
         output += "]";
         return output;
@@ -76,9 +88,9 @@ public class ArrayStackButBetter<E> implements StackADT<E> {
     private void expandCapacity() {
         E[] largerArray = (E[]) (new Object[elements.length * 2]);//unchecked
         // copy the elements array to the largerArray
-        for (int i = 0; i < size; i++)
+        for (int i = 0; i < size; i++) {
             largerArray[i] = elements[i];
+        }
         elements = largerArray;
     }
 }
-
