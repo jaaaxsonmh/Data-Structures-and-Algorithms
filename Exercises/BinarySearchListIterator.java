@@ -10,13 +10,12 @@ public class BinarySearchListIterator<E extends Comparable> {
         this.elements = elements;
     }
 
-    public int search(E target) {
+
+    private int search(E target) {
         if (target == null)
             throw new NullPointerException("search target is null");
-        return search(target, 0, elements.size());
-    }
 
-    private int search(E target, int start, int end) {
+        int start = 0;
 
         for (E element : elements) {
             int comparison = target.compareTo(element);
@@ -49,29 +48,29 @@ public class BinarySearchListIterator<E extends Comparable> {
 
     public static void main(String[] args) {
         ArrayList<String> list = new ArrayList<>();
-        list.add("ant");
-        list.add("bat");
+        list.add("jack");
+        list.add("me");
+        list.add("1");
+        list.add("hello");
         list.add("cat");
-        list.add("cow");
         list.add("dog");
-        list.add("eel");
-        list.add("fly");
-        list.add("fox");
-        list.add("owl");
-        list.add("pig");
-        list.add("rat");
+        list.add("catdog");
+        list.add("big man");
+        list.add("big");
+        list.add("space");
+        list.add("90");
 
         BinarySearchListIterator<String> bin = new BinarySearchListIterator<>(list);
 
-        String target = "fly";
+        String target = "100";
 
         int index = bin.search(target);
 
         System.out.println(bin.toString());
 
         if (index >= list.size()) {
-            System.out.println(target + " not at index " + (-index - 1));
-        }else {
+            System.out.println(target + " is not contained within the list ");
+        } else {
             System.out.println(target + " found at index " + index);
         }
     }

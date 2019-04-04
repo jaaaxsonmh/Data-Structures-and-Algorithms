@@ -28,7 +28,8 @@ public class JosephusQueue extends LinkedQueue {
 
         StringBuilder sb = new StringBuilder();
 
-        System.out.print("The order is: ");
+        System.out.print("The initial: " + queue.toString());
+        System.out.print("\nRemoval order: ");
 
         while (!queue.isEmpty())
         {
