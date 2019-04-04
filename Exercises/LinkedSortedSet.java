@@ -5,9 +5,6 @@ import java.util.ListIterator;
 
 public class LinkedSortedSet<E extends Comparable<E>> extends LinkedList<E> {
 
-    private static final long serialVersionUID = 1L;
-
-
     public boolean add(E element) {
         ListIterator<E> itr = listIterator();
         while(true) {

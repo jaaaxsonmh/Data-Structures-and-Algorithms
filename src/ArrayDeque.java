@@ -15,11 +15,9 @@ public class ArrayDeque<E> implements DequeADT<E> {
     public void enqueueRear(E element) {
         E[] old = values;
         values = (E[]) new Object[old.length + 1];
-//        Manual array copy (if I wasn't allowed to use arraycopy)
-//        for (int k = 0; k < old.length; k++) {
-//            values[k] = old[k];
-//        }
-        System.arraycopy(old, 0, values, 0, old.length);
+        for (int k = 0; k < old.length; k++) {
+            values[k] = old[k];
+        }
         values[values.length - 1] = element;
     }
 
@@ -31,11 +29,9 @@ public class ArrayDeque<E> implements DequeADT<E> {
         E value = first();
         E[] old = values;
         values = (E[]) new Object[old.length - 1];
-//        Manual array copy (if I wasn't allowed to use arraycopy)
-//        for (int k = 0; k < values.length; k++) {
-//            values[k] = old[k + 1];
-//        }
-        System.arraycopy(old, 1, values, 0, values.length);
+        for (int k = 0; k < values.length; k++) {
+            values[k] = old[k + 1];
+        }
         return value;
     }
 
@@ -43,11 +39,9 @@ public class ArrayDeque<E> implements DequeADT<E> {
     public void enqueueFront(E element) {
         E[] old = values;
         values = (E[]) new Object[old.length + 1];
-//        Manual array copy (if I wasn't allowed to use arraycopy)
-//        for (int k = 0; k < old.length; k++) {
-//            values[k + 1] = old[k];
-//        }
-        System.arraycopy(old, 0, values, 1, old.length);
+        for (int k = 0; k < old.length; k++) {
+            values[k + 1] = old[k];
+        }
         values[0] = element;
     }
 
@@ -58,11 +52,9 @@ public class ArrayDeque<E> implements DequeADT<E> {
         }
         E[] old = values;
         values = (E[]) new Object[old.length - 1];
-//        Manual array copy (if I wasn't allowed to use arraycopy)
-//        for (int k = 0; k < values.length; k++) {
-//            values[k] = old[k];
-//        }
-        System.arraycopy(old, 0, values, 0, values.length);
+        for (int k = 0; k < values.length; k++) {
+            values[k] = old[k];
+        }
 
     }
 
