@@ -5,6 +5,7 @@ import java.util.ArrayList;
 public class BinarySearchListIterator<E extends Comparable> {
 
     private ArrayList<E> elements;
+    private int comp = 0;
 
     private BinarySearchListIterator(ArrayList<E> elements) {
         this.elements = elements;
@@ -16,9 +17,11 @@ public class BinarySearchListIterator<E extends Comparable> {
             throw new NullPointerException("search target is null");
 
         int start = 0;
+     
 
         for (E element : elements) {
             int comparison = target.compareTo(element);
+            comp++;
             if (comparison == 0) {
                 return start;
             }
@@ -60,18 +63,19 @@ public class BinarySearchListIterator<E extends Comparable> {
         list.add("space");
         list.add("90");
 
-        BinarySearchListIterator<String> bin = new BinarySearchListIterator<>(list);
+        BinarySearchListIterator<String> bsi = new BinarySearchListIterator<>(list);
 
-        String target = "100";
+        String target = "1";
 
-        int index = bin.search(target);
+        int index = bsi.search(target);
 
-        System.out.println(bin.toString());
+        System.out.println(bsi.toString());
 
         if (index >= list.size()) {
             System.out.println(target + " is not contained within the list ");
         } else {
             System.out.println(target + " found at index " + index);
         }
+        System.out.println(bsi.comp + " comparisons");
     }
 }

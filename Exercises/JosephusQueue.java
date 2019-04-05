@@ -36,12 +36,14 @@ public class JosephusQueue extends LinkedQueue {
             for (int i = 0; i < gap; ++i)
             {
                 if (i < gap - 1) {
-                    queue.enqueue(queue.dequeue()); // skipped persons; re-attach them to the end of queue
+                    queue.enqueue(queue.dequeue()); // skip person; re-attach them to the end of queue
                 }else {
                     sb.append(queue.dequeue()).append(" "); // an eliminated person
                 }
             }
         }
+        
+        
         System.out.println(sb.toString());
         long endTime = System.nanoTime();
         long duration = ((endTime - startTime) / 1000000);
