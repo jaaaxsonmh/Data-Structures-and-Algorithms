@@ -1,4 +1,4 @@
-package Exercises;
+package exercises;
 
 /**
  A class that implements a stack collection using an

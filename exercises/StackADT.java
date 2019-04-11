@@ -1,4 +1,4 @@
-package Exercises;
+package exercises;
 
 /**
  An interface that defines the abstract data type

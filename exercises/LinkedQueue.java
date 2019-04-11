@@ -1,4 +1,4 @@
-package Exercises;
+package exercises;
 
 /**
  A class that implements a queue collection using a

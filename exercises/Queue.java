@@ -1,4 +1,4 @@
-package Exercises;
+package exercises;
 
 public interface Queue<E> {
 

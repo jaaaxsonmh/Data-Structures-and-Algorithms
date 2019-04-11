@@ -1,15 +1,15 @@
-package Exercises;
+package exercises;
 
 import java.util.Arrays;
 
-public class ArrayQueue<E> implements Queue<E> {
+public class CircularArray<E> implements Queue<E> {
 
     private int front = 0;
     private int rear = -1;
     private E[] elements;
     private int size = 0;
 
-    ArrayQueue(int intialCapacity) {
+    CircularArray(int intialCapacity) {
         if (intialCapacity < 0) {
             throw new IllegalArgumentException("Queue Underflow");
         }
