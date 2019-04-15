@@ -1,4 +1,4 @@
-package src;
+package src.assignment1;
 
 /*
  * author Jack Hosking
