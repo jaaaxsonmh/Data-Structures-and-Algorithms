@@ -1,5 +1,7 @@
 package src.assignment2;
 
+import java.util.Arrays;
+
 public class ArraySorter<E extends Comparable> {
     public void selectionSort(E[] list) {
         int indexMin; // index of least element
@@ -50,6 +52,54 @@ public class ArraySorter<E extends Comparable> {
     public void cocktailSort(E[] list) {
         int end = list.length;
         int start = 0;
+        boolean swapped = true;
+        E temp;
+
+        System.out.println(Arrays.toString(list));
+
+        while(swapped) {
+            swapped = false;
+
+            //bottom to top comparison.
+            for(int i = start; i < end - 1; i++){
+                if (list[i].compareTo(list[i + 1]) > 0) {  // swap the elements at indices i and i+1
+                    temp = list[i + 1];
+                    list[i + 1] = list[i];
+                    list[i] = temp;
+                    swapped = true;
+                    System.out.println(Arrays.toString(list));
+
+                }
+            }
+
+            // if swapped is false, then nothing has been moved and we can exit as list will be sorted.
+            if(!swapped)
+                break;
+
+            //reset flag
+            swapped = false;
+
+            // decrease end point
+            //element at end is now sorted
+            end--;
+
+            //top to bottom comparison.
+            for(int i = end - 1; i >= start; i--) {
+                if (list[i].compareTo(list[i + 1]) > 0) {  // swap the elements at indices i+1 and i
+                    temp = list[i];
+                    list[i] =  list[i + 1];
+                    list[i + 1] = temp;
+                    swapped = true;
+                    System.out.println(Arrays.toString(list));
+
+                }
+            }
+
+            //increase starting point
+            //element at start is now sorted
+            start++;
+        }
+
     }
 
     public void quickSort(E[] list) {
@@ -141,13 +191,17 @@ public class ArraySorter<E extends Comparable> {
 
     // driver main method to test one of the algorithms
     public static void main(String[] args) {
-        ArraySorter<String> sorter = new ArraySorter<String>();
-        String[] list = {"cow", "fly", "dog", "bat", "fox", "cat", "eel",
+        ArraySorter<Integer> sorter = new ArraySorter<>();
+        String[] listString = {"cow", "fly", "dog", "bat", "fox", "cat", "eel",
                 "ant"};
-        sorter.quickSort(list);
+
+        //Easier to visualize the 'cocktail shaking' shape
+        Integer[] listInt = {10, 9, 8, 7, 6, 5, 4, 3, 2, 1};
+
+        sorter.cocktailSort(listInt);
         // output the results
-        for (int i = 0; i < list.length; i++)
-            System.out.print(((i > 0) ? ", " : "") + list[i]);
+        for (int i = 0; i < listInt.length; i++)
+            System.out.print(((i > 0) ? ", " : "") + listInt[i]);
         System.out.println();
     }
 }
