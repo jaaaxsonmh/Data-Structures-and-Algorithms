@@ -1,5 +1,6 @@
 package src.assignment2;
 
+import javax.sound.midi.SysexMessage;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.util.AbstractSet;
@@ -14,15 +15,14 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class BinarySearchTree<E> extends AbstractSet<E>
-        implements SortedSet<E>
-{
+        implements SortedSet<E> {
     private int numElements;
     protected BinaryTreeNode rootNode;
     private Comparator<? super E> comparator;//null for natural ordering
     private E fromElement, toElement; // bounds for visible view of tree
 
-    public BinarySearchTree()
-    {  super();
+    public BinarySearchTree() {
+        super();
         numElements = 0;
         rootNode = null;
         comparator = null;
@@ -30,55 +30,56 @@ public class BinarySearchTree<E> extends AbstractSet<E>
         toElement = null;
     }
 
-    public BinarySearchTree(Collection<? extends E> c)
-    {  this();
+    public BinarySearchTree(Collection<? extends E> c) {
+        this();
         for (E element : c)
             add(element);
     }
 
-    public BinarySearchTree(Comparator<? super E> comparator)
-    {  this();
+    public BinarySearchTree(Comparator<? super E> comparator) {
+        this();
         this.comparator = comparator;
     }
 
 
-    public void drawTree(Graphics g, int panel_width)
-    {   int nodeCount = 0 - (size()/2);
-        if(rootNode != null)
-            drawNode(g, rootNode, panel_width/2,0, nodeCount);
+    public void drawTree(Graphics g, int panel_width) {
+        int nodeCount = 0 - (size() / 2);
+        if (rootNode != null)
+            drawNode(g, rootNode, panel_width / 2, 0, nodeCount);
 
     }
 
-    private int drawNode(Graphics g, BinaryTreeNode current, int xPosition, int level, int nodeCount)
-    {   int BOX_SIZE = 40;
+    private int drawNode(Graphics g, BinaryTreeNode current, int xPosition, int level, int nodeCount) {
+        int BOX_SIZE = 40;
 
-        if(current.leftChild != null)
-            nodeCount = drawNode(g, current.leftChild, xPosition, level+1,  nodeCount);
-        current.x = xPosition + nodeCount*BOX_SIZE;
-        current.y = level*2*BOX_SIZE + BOX_SIZE;
+        if (current.leftChild != null)
+            nodeCount = drawNode(g, current.leftChild, xPosition, level + 1, nodeCount);
+        current.x = xPosition + nodeCount * BOX_SIZE;
+        current.y = level * 2 * BOX_SIZE + BOX_SIZE;
         nodeCount++;
 
-        if(current.rightChild != null)
-            nodeCount = drawNode(g, current.rightChild, xPosition, level+1, nodeCount);
+        if (current.rightChild != null)
+            nodeCount = drawNode(g, current.rightChild, xPosition, level + 1, nodeCount);
 
         g.setColor(Color.red);
-        if(current.leftChild != null) g.drawLine(current.x, current.y, current.leftChild.x, current.leftChild.y-BOX_SIZE/2);
-        if(current.rightChild != null) g.drawLine(current.x, current.y, current.rightChild.x, current.rightChild.y-BOX_SIZE/2);
-        if(!current.visit)
+        if (current.leftChild != null)
+            g.drawLine(current.x, current.y, current.leftChild.x, current.leftChild.y - BOX_SIZE / 2);
+        if (current.rightChild != null)
+            g.drawLine(current.x, current.y, current.rightChild.x, current.rightChild.y - BOX_SIZE / 2);
+        if (!current.visit)
             g.setColor(Color.WHITE);
         else
             g.setColor(Color.YELLOW);
-        g.fillRect(current.x - BOX_SIZE/2,current.y-BOX_SIZE/2,BOX_SIZE,BOX_SIZE);
+        g.fillRect(current.x - BOX_SIZE / 2, current.y - BOX_SIZE / 2, BOX_SIZE, BOX_SIZE);
         g.setColor(Color.BLACK);
-        g.drawRect(current.x - BOX_SIZE/2,current.y-BOX_SIZE/2,BOX_SIZE,BOX_SIZE);
-        g.drawString(current.element.toString(), current.x-BOX_SIZE/4, current.y+BOX_SIZE/4);
+        g.drawRect(current.x - BOX_SIZE / 2, current.y - BOX_SIZE / 2, BOX_SIZE, BOX_SIZE);
+        g.drawString(current.element.toString(), current.x - BOX_SIZE / 4, current.y + BOX_SIZE / 4);
         return nodeCount;
     }
 
 
-
-    public BinarySearchTree(SortedSet<E> s)
-    {  this();
+    public BinarySearchTree(SortedSet<E> s) {
+        this();
         this.comparator = s.comparator();
         for (E element : s)
             add(element);
@@ -86,8 +87,8 @@ public class BinarySearchTree<E> extends AbstractSet<E>
 
     // private constructor used to create a view of a portion of tree
     private BinarySearchTree(BinaryTreeNode rootNode,
-                             Comparator<? super E> comparator, E fromElement, E toElement)
-    {  this(comparator);
+                             Comparator<? super E> comparator, E fromElement, E toElement) {
+        this(comparator);
         this.rootNode = rootNode;
         this.fromElement = fromElement;
         this.toElement = toElement;
@@ -96,21 +97,21 @@ public class BinarySearchTree<E> extends AbstractSet<E>
     }
 
     // recursive helper method that counts number of descendants of node
-    private int countNodes(BinaryTreeNode node)
-    {  if (node==null)
-        return 0;
-    else
-        return countNodes(node.leftChild) + 1
-                + countNodes(node.rightChild);
+    private int countNodes(BinaryTreeNode node) {
+        if (node == null)
+            return 0;
+        else
+            return countNodes(node.leftChild) + 1
+                    + countNodes(node.rightChild);
     }
 
     // helper method that determines whether an element is within the
     // specified view
-    private boolean withinView(E element)
-    {  boolean inside = true;
-        if (fromElement!=null && compare(element, fromElement)<0)
+    private boolean withinView(E element) {
+        boolean inside = true;
+        if (fromElement != null && compare(element, fromElement) < 0)
             inside = false;
-        if (toElement!=null && compare(element, toElement)>=0)
+        if (toElement != null && compare(element, toElement) >= 0)
             inside = false;
         return inside;
     }
@@ -118,42 +119,36 @@ public class BinarySearchTree<E> extends AbstractSet<E>
     // adds the element to the sorted set provided it is not already in
     // the set, and returns true if the sorted set did not already
     // contain the element
-    public boolean add(E o)
-    {  if (!withinView(o))
-        throw new IllegalArgumentException("Outside view");
+    public boolean add(E o) {
+        if (!withinView(o))
+            throw new IllegalArgumentException("Outside view");
         BinaryTreeNode newNode = new BinaryTreeNode(o);
         boolean added = false;
-        if (rootNode==null)
-        {  rootNode = newNode;
+        if (rootNode == null) {
+            rootNode = newNode;
             added = true;
-        }
-        else
-        {  // find where to add newNode
+        } else {  // find where to add newNode
             BinaryTreeNode currentNode = rootNode;
             boolean done = false;
-            while (!done)
-            {  int comparison = compare(o, currentNode.element);
-                if (comparison<0) // newNode is less than currentNode
-                {  if (currentNode.leftChild==null)
-                {  // add newNode as leftChild
-                    currentNode.leftChild = newNode;
-                    done = true;
-                    added = true;
-                }
-                else
-                    currentNode = currentNode.leftChild;
-                }
-                else if (comparison>0)//newNode is greater than currentNode
-                {  if (currentNode.rightChild==null)
-                {  // add newNode as rightChild
-                    currentNode.rightChild = newNode;
-                    done = true;
-                    added = true;
-                }
-                else
-                    currentNode = currentNode.rightChild;
-                }
-                else if (comparison==0) // newNode equal to currentNode
+            while (!done) {
+                int comparison = compare(o, currentNode.element);
+                if (comparison < 0) // newNode is less than currentNode
+                {
+                    if (currentNode.leftChild == null) {  // add newNode as leftChild
+                        currentNode.leftChild = newNode;
+                        done = true;
+                        added = true;
+                    } else
+                        currentNode = currentNode.leftChild;
+                } else if (comparison > 0)//newNode is greater than currentNode
+                {
+                    if (currentNode.rightChild == null) {  // add newNode as rightChild
+                        currentNode.rightChild = newNode;
+                        done = true;
+                        added = true;
+                    } else
+                        currentNode = currentNode.rightChild;
+                } else if (comparison == 0) // newNode equal to currentNode
                     done = true; // no duplicates in this binary tree impl.
             }
         }
@@ -163,51 +158,48 @@ public class BinarySearchTree<E> extends AbstractSet<E>
 
     // performs a comparison of the two elements, using the comparator
     // if not null, otherwise using the compareTo method
-    private int compare(E element1, E element2)
-    {  if (comparator!=null)
-        return comparator.compare(element1, element2);
-    else if (element1!=null && element1 instanceof Comparable)
-        return ((Comparable)element1).compareTo(element2); //unchecked
-    else if (element2!=null && element2 instanceof Comparable)
-        return -((Comparable)element2).compareTo(element1);//unchecked
-    else return 0;
+    private int compare(E element1, E element2) {
+        if (comparator != null)
+            return comparator.compare(element1, element2);
+        else if (element1 != null && element1 instanceof Comparable)
+            return ((Comparable) element1).compareTo(element2); //unchecked
+        else if (element2 != null && element2 instanceof Comparable)
+            return -((Comparable) element2).compareTo(element1);//unchecked
+        else return 0;
     }
 
     // remove the element from the sorted set and returns true if the
     // element was in the sorted set
-    public boolean remove(Object o)
-    {  boolean removed = false;
-        E element = (E)o; // unchecked, could throw exception
+    public boolean remove(Object o) {
+        boolean removed = false;
+        E element = (E) o; // unchecked, could throw exception
         if (!withinView(element))
             throw new IllegalArgumentException("Outside view");
-        if (rootNode!=null)
-        {  // check if root to be removed
-            if (compare(element, rootNode.element)==0)
+        if (rootNode != null) {  // check if root to be removed
+            if (compare(element, rootNode.element) == 0)
                 rootNode = makeReplacement(rootNode);
-            else
-            {  // search for the element o
+            else {  // search for the element o
                 BinaryTreeNode parentNode = rootNode;
                 BinaryTreeNode removalNode;
                 // determine whether to traverse to left or right of root
-                if (compare(element, rootNode.element)<0)
+                if (compare(element, rootNode.element) < 0)
                     removalNode = rootNode.leftChild;
                 else // compare(element, rootNode.element)>0
                     removalNode = rootNode.rightChild;
-                while (removalNode!=null && !removed)
-                {  // determine whether the removalNode has been found
+                while (removalNode != null && !removed) {  // determine whether the removalNode has been found
                     int comparison = compare(element, removalNode.element);
-                    if (comparison==0)
-                    {  if (removalNode==parentNode.leftChild)
-                        parentNode.leftChild
-                                = makeReplacement(removalNode);
-                    else // removalNode==parentNode.rightChild
-                        parentNode.rightChild
-                                = makeReplacement(removalNode);
+                    if (comparison == 0) {
+                        if (removalNode == parentNode.leftChild)
+                            parentNode.leftChild
+                                    = makeReplacement(removalNode);
+                        else // removalNode==parentNode.rightChild
+                            parentNode.rightChild
+                                    = makeReplacement(removalNode);
                         removed = true;
-                    }
-                    else // determine whether to traverse to left or right
-                    {  parentNode = removalNode;
-                        if (comparison<0)
+                    } else // determine whether to traverse to left or right
+                    {
+                        parentNode = removalNode;
+                        if (comparison < 0)
                             removalNode = removalNode.leftChild;
                         else // comparison>0
                             removalNode = removalNode.rightChild;
@@ -221,32 +213,30 @@ public class BinarySearchTree<E> extends AbstractSet<E>
 
     // helper method which removes removalNode (presumed not null) and
     // returns a reference to node that should take place of removalNode
-    private BinaryTreeNode makeReplacement(BinaryTreeNode removalNode)
-    {  BinaryTreeNode replacementNode = null;
+    private BinaryTreeNode makeReplacement(BinaryTreeNode removalNode) {
+        BinaryTreeNode replacementNode = null;
         // check cases when removalNode has only one child
-        if (removalNode.leftChild!=null && removalNode.rightChild==null)
+        if (removalNode.leftChild != null && removalNode.rightChild == null)
             replacementNode = removalNode.leftChild;
-        else if (removalNode.leftChild==null
-                && removalNode.rightChild!=null)
+        else if (removalNode.leftChild == null
+                && removalNode.rightChild != null)
             replacementNode = removalNode.rightChild;
             // check case when removalNode has two children
-        else if (removalNode.leftChild!=null
-                && removalNode.rightChild!=null)
-        {  // find the inorder successor and use it as replacementNode
+        else if (removalNode.leftChild != null
+                && removalNode.rightChild != null) {  // find the inorder successor and use it as replacementNode
             BinaryTreeNode parentNode = removalNode;
             replacementNode = removalNode.rightChild;
-            if (replacementNode.leftChild==null)
+            if (replacementNode.leftChild == null)
                 // replacementNode can be pushed up one level to replace
                 // removalNode, move the left child of removalNode to be
                 // the left child of replacementNode
                 replacementNode.leftChild = removalNode.leftChild;
-            else
-            {  //find left-most descendant of right subtree of removalNode
-                do
-                {  parentNode = replacementNode;
+            else {  //find left-most descendant of right subtree of removalNode
+                do {
+                    parentNode = replacementNode;
                     replacementNode = replacementNode.leftChild;
                 }
-                while (replacementNode.leftChild!=null);
+                while (replacementNode.leftChild != null);
                 // move the right child of replacementNode to be the left
                 // child of the parent of replacementNode
                 parentNode.leftChild = replacementNode.rightChild;
@@ -260,33 +250,182 @@ public class BinarySearchTree<E> extends AbstractSet<E>
         return replacementNode;
     }
 
-    public Iterator<E> iterator()
-    {  return new BinaryTreeIterator(rootNode);
+    // Purpose is to take a String (Object) and
+    // and find its Node counterpart.
+    // Catch null pointers if not in bst, or no input.
+    public void findNode(Object o, Boolean direction) {
+        boolean found = false;
+        E element = (E) o; // unchecked, could throw exception
+        try {
+            BinaryTreeNode currentNode = rootNode;
+            while (!found && currentNode != null) {
+                int comparison = compare(currentNode.element, element);
+                if (comparison == 0) {
+                    found = true;
+                } else if (comparison < 0) {
+                    // navigate to the right
+                    currentNode = currentNode.rightChild;
+                } else {
+                    // navigate to the left
+                    currentNode = currentNode.leftChild;
+                }
+            }
+            //true = right rotation
+            if (direction) {
+                rightRotate(currentNode);
+            } else {
+                leftRotate(currentNode);
+            }
+
+        } catch (NullPointerException e) {
+            System.out.println("NullPointerException caught");
+        }
+
+
+    }
+
+    private void leftRotate(BinaryTreeNode rotateNode) {
+        //No right child to rotate left (be the parent)
+        if (rotateNode.rightChild == null) {
+            System.out.println("Can not perform left rotation, not right child.");
+            return;
+        }
+        // the old right node is the right child of the rotationNode
+        BinaryTreeNode oldRight = rotateNode.rightChild;
+
+        //right child is now the left child
+        rotateNode.rightChild = oldRight.leftChild;
+
+        if (rotateNode.parent == null) {
+            rootNode = oldRight;
+            System.out.println("this is always true");
+        } else if (rotateNode.leftChild == rotateNode) {
+            rotateNode.leftChild = oldRight;
+        } else {
+            rotateNode.rightChild = oldRight;
+        }
+
+        oldRight.leftChild = rotateNode;
+    }
+
+
+
+    private void rightRotate(BinaryTreeNode rotateNode) {
+        System.out.println(rotateNode);
+        if(rotateNode.leftChild ==  null) {
+            System.out.println("Can not perform left rotation, not right child.");
+            return;
+        }
+
+        BinaryTreeNode oldLeft = rotateNode.leftChild;
+
+        //right child is now the left child
+        rotateNode.leftChild = oldLeft.rightChild;
+
+        if (rotateNode.parent == null) {
+            rootNode = oldLeft;
+            System.out.println("this is always true");
+        } else if (rotateNode.leftChild == rotateNode) {
+            rotateNode.leftChild = oldLeft;
+        } else {
+            rotateNode.rightChild = oldLeft;
+        }
+
+        oldLeft.rightChild = rotateNode;
+    }
+
+    // attempt 1
+//    if (n.getRight() == null) {
+//        return;
+//    }
+//    BinaryTreeNode<E> oldRight = n.getRight();
+//        n.setRight(oldRight.getLeft());
+//        if (n.getParent() == null) {
+//        root = oldRight;
+//    } else if (n.getParent().getLeft() == n) {
+//        n.getParent().setLeft(oldRight);
+//    } else {
+//        n.getParent().setRight(oldRight);
+//    }
+//        oldRight.setLeft(n);
+
+
+    //attempt2
+//    void leftRotate(node x){
+//        node right = rotateNode.rightChild;
+//        rotateNode.rightChild = right.leftChild;
+//        if(right.leftChild != null){
+//            right.leftChild.parent = rotateNode;
+//        }
+//        right.parent = rotateNode.parent;
+//        if(rotateNode.parent == null)
+//            this.root = right;
+//        else if(rotateNode == rotateNode.parent.leftChild){
+//            rotateNode.parent.leftChild = right;
+//        }
+//        else{
+//            rotateNode.parent.rightChild = right;
+//        }
+//        right.leftChild = rotateNode;
+//        rotateNode.parent = right;
+//    }
+
+// attempt 3
+//    BinaryTreeNode y = rotateNode.rightChild;
+//        if(y == null) {
+//            System.out.println("Can not perform left rotation, not right child.");
+//            return;
+//        }
+//
+//        rotateNode.leftChild = y.rightChild;
+//        if(y.leftChild != null){
+//            y.leftChild.setParent(rotateNode);
+//        }
+//
+//
+//        y.setParent(rotateNode.parent());
+//
+//        if(rotateNode.parent() == null) {
+//            rootNode = y;
+//        } else if (rotateNode == rotateNode.parent().leftChild) {
+//            rotateNode.parent().leftChild = y;
+//        } else {
+//            rotateNode.parent().rightChild = y;
+//        }
+//
+//        y.leftChild = rotateNode;
+//        rotateNode.setParent(y);
+//
+////        rotateNode.parent = y;
+
+
+    public Iterator<E> iterator() {
+        return new BinaryTreeIterator(rootNode);
     }
 
     // returns the number of elements in the tree
-    public int size()
-    {  return numElements;
+    public int size() {
+        return numElements;
     }
 
     // removes all elements from the collection
-    public void clear()
-    {  rootNode = null; // all nodes will be garbage collected as well
+    public void clear() {
+        rootNode = null; // all nodes will be garbage collected as well
     }
 
     // overridden method with an efficient O(log n) search algorithm
     // rather than the superclasses O(n) linear search using iterator
-    public boolean contains(Object o)
-    {  boolean found = false;
-        E element = (E)o; // unchecked, could throw exception
+    public boolean contains(Object o) {
+        boolean found = false;
+        E element = (E) o; // unchecked, could throw exception
         if (!withinView(element))
             return false;
         BinaryTreeNode currentNode = rootNode;
-        while (!found && currentNode!=null)
-        {  int comparison = compare(currentNode.element, element);
-            if (comparison==0)
+        while (!found && currentNode != null) {
+            int comparison = compare(currentNode.element, element);
+            if (comparison == 0)
                 found = true;
-            else if (comparison<0)
+            else if (comparison < 0)
                 currentNode = currentNode.rightChild;
             else // comparison>0
                 currentNode = currentNode.leftChild;
@@ -296,94 +435,98 @@ public class BinarySearchTree<E> extends AbstractSet<E>
 
     // returns the Comparator used to compare elements or null if
     // the element natural ordering is used
-    public Comparator<? super E> comparator()
-    {  return comparator;
+    public Comparator<? super E> comparator() {
+        return comparator;
     }
 
     // returns the first (lowest) element currently in sorted set that
     // is at least as big as fromElement, returns null if none found
-    public E first()
-    {  if (rootNode==null)
-        throw new NoSuchElementException("empty tree");
+    public E first() {
+        if (rootNode == null)
+            throw new NoSuchElementException("empty tree");
         // find the least descendant of rootNode that is at least
         // as big as fromElement by traversing down tree from root
         BinaryTreeNode currentNode = rootNode;
         BinaryTreeNode leastYetNode = null; // smallest found so far
-        while (currentNode!=null)
-        {  if (compare(currentNode.element, fromElement)>=0)
-        {  if (compare(currentNode.element, toElement)<0)
-            leastYetNode = currentNode;
-            // move to the left child to see if a smaller element okay
-            // since all in right subtree will be larger
-            currentNode = currentNode.leftChild;
+        while (currentNode != null) {
+            if (compare(currentNode.element, fromElement) >= 0) {
+                if (compare(currentNode.element, toElement) < 0)
+                    leastYetNode = currentNode;
+                // move to the left child to see if a smaller element okay
+                // since all in right subtree will be larger
+                currentNode = currentNode.leftChild;
+            } else // compare(currentNode.element, fromElement)<0
+            {  // move to the right child since this element too small
+                // so all in left subtree will also be too small
+                currentNode = currentNode.rightChild;
+            }
         }
-        else // compare(currentNode.element, fromElement)<0
-        {  // move to the right child since this element too small
-            // so all in left subtree will also be too small
-            currentNode = currentNode.rightChild;
-        }
-        }
-        if (leastYetNode==null) // no satisfactory node found
+        if (leastYetNode == null) // no satisfactory node found
             return null;
         else
             return leastYetNode.element;
     }
 
-    public SortedSet<E> headSet(E toElement)
-    {  return subSet(null, toElement);
+    public SortedSet<E> headSet(E toElement) {
+        return subSet(null, toElement);
     }
 
     // returns the last (highest) element currently in sorted set that
     // is less than toElement, return null if none found
-    public E last()
-    {  if (rootNode==null)
-        throw new NoSuchElementException("empty tree");
+    public E last() {
+        if (rootNode == null)
+            throw new NoSuchElementException("empty tree");
         // find the greatest descendant of rootNode that is less than
         // toElement by traversing down tree from root
         BinaryTreeNode currentNode = rootNode;
         BinaryTreeNode greatestYetNode = null; // greatest found so far
-        while (currentNode!=null)
-        {  if (compare(currentNode.element, toElement)<0)
-        {  if (compare(currentNode.element, fromElement)>=0)
-            greatestYetNode = currentNode;
-            // move to the right child to see if a greater element okay
-            // since all in left subtree will be smaller
-            currentNode = currentNode.rightChild;
+        while (currentNode != null) {
+            if (compare(currentNode.element, toElement) < 0) {
+                if (compare(currentNode.element, fromElement) >= 0)
+                    greatestYetNode = currentNode;
+                // move to the right child to see if a greater element okay
+                // since all in left subtree will be smaller
+                currentNode = currentNode.rightChild;
+            } else // compare(currentNode.element, toElement)>=0
+            {  // move to the left child since this element too large
+                // so all in right subtree will also be too large
+                currentNode = currentNode.leftChild;
+            }
         }
-        else // compare(currentNode.element, toElement)>=0
-        {  // move to the left child since this element too large
-            // so all in right subtree will also be too large
-            currentNode = currentNode.leftChild;
-        }
-        }
-        if (greatestYetNode==null) // no satisfactory node found
+        if (greatestYetNode == null) // no satisfactory node found
             return null;
         else
             return greatestYetNode.element;
     }
 
 
-    public SortedSet<E> subSet(E fromElement, E toElement)
-    {  return new BinarySearchTree<E>(rootNode, comparator, fromElement,
-            toElement);
+    public SortedSet<E> subSet(E fromElement, E toElement) {
+        return new BinarySearchTree<E>(rootNode, comparator, fromElement,
+                toElement);
     }
 
-    public SortedSet<E> tailSet(E fromElement)
-    {  return subSet(fromElement, null);
+    public SortedSet<E> tailSet(E fromElement) {
+        return subSet(fromElement, null);
     }
+
 
     // outputs the elements stored in the full binary tree (not just
     // the view) using inorder traversal
-    public String toString()
-    {  return "Tree: " + rootNode;
+    public String toString() {
+        return "Tree: " + rootNode;
     }
 
-    public static void main(String[] args)
-    {  // create the binary search tree
+    public static void main(String[] args) {  // create the binary search tree
         SortedSet<String> tree = new BinarySearchTree<String>();
         // build the tree
-        tree.add("cow");tree.add("fly");tree.add("dog");tree.add("bat");
-        tree.add("fox");tree.add("cat");tree.add("eel");tree.add("ant");
+        tree.add("cow");
+        tree.add("fly");
+        tree.add("dog");
+        tree.add("bat");
+        tree.add("fox");
+        tree.add("cat");
+        tree.add("eel");
+        tree.add("ant");
         System.out.println("Original Tree: " + tree);
         tree.remove("owl");
         tree.remove("cow");
@@ -392,38 +535,47 @@ public class BinarySearchTree<E> extends AbstractSet<E>
         SortedSet<String> subtree = tree.subSet("cat", "fox");
         System.out.print("Subtree iteration: ");
         Iterator<String> i = subtree.iterator();
-        while (i.hasNext())
-        {  System.out.print(i.next());
+        while (i.hasNext()) {
+            System.out.print(i.next());
             if (i.hasNext()) System.out.print(", ");
         }
         System.out.println();
         System.out.println("first element in subtree: " + subtree.first());
         System.out.println("last element in subtree: " + subtree.last());
     }
+
     // inner class that represents a node in the binary tree
     // where each node consists of the element and links to
     // left child and right child (no need for link to parent)
-    protected class BinaryTreeNode
-    {
-        public BinaryTreeNode leftChild, rightChild;
+    protected class BinaryTreeNode {
+        public BinaryTreeNode leftChild, rightChild, parent;
         public E element;
-        public int x,y;
+        public int x, y;
         public boolean visit;
 
-        public BinaryTreeNode(E element)
-        {  this.element= element;
+        public BinaryTreeNode(E element) {
+            this.element = element;
             leftChild = null;
             rightChild = null;
         }
 
+        public void setParent(BinaryTreeNode parent) {
+            this.parent = parent;
+        }
+
+        public BinaryTreeNode parent() {
+            return parent;
+        }
+
+
         // returns a string representation of the node and
         // its children using inorder (left-this-right) traversal
-        public String toString()
-        {  String output = "[";
-            if (leftChild!=null)
+        public String toString() {
+            String output = "[";
+            if (leftChild != null)
                 output += "" + leftChild;
             output += "" + element;
-            if (rightChild!=null)
+            if (rightChild != null)
                 output += "" + rightChild;
             output += "]";
             return output;
@@ -431,13 +583,11 @@ public class BinarySearchTree<E> extends AbstractSet<E>
     }
 
     // inner class that represents an Iterator for a binary tree
-    private class BinaryTreeIterator implements Iterator<E>
-    {
+    private class BinaryTreeIterator implements Iterator<E> {
         private LinkedList<E> list;
         private Iterator<E> iterator;
 
-        public BinaryTreeIterator(BinaryTreeNode rootNode)
-        {  // puts the elements in a linked list using inorder traversal
+        public BinaryTreeIterator(BinaryTreeNode rootNode) {  // puts the elements in a linked list using inorder traversal
             list = new LinkedList<E>();
             traverseInOrder(rootNode);
             iterator = list.iterator();
@@ -445,25 +595,27 @@ public class BinarySearchTree<E> extends AbstractSet<E>
 
         // recursive helper method that traverses the subtree from node
         // adding the elements to the list collection
-        private void traverseInOrder(BinaryTreeNode node)
-        {  if (node!=null)
-        {  traverseInOrder(node.leftChild);
-            if (withinView(node.element))
-                list.add(node.element);
-            traverseInOrder(node.rightChild);
-        }
-        }
-
-        public boolean hasNext()
-        {  return iterator.hasNext();
+        private void traverseInOrder(BinaryTreeNode node) {
+            if (node != null) {
+                traverseInOrder(node.leftChild);
+                if (withinView(node.element))
+                    list.add(node.element);
+                traverseInOrder(node.rightChild);
+            }
         }
 
-        public E next()
-        {  return iterator.next();
+        public boolean hasNext() {
+            return iterator.hasNext();
         }
 
-        public void remove()
-        {  throw new UnsupportedOperationException();
+        public E next() {
+            return iterator.next();
         }
+
+        public void remove() {
+            throw new UnsupportedOperationException();
+        }
+
+
     }
 }

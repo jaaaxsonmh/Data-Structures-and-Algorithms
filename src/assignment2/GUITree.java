@@ -16,7 +16,7 @@ public class GUITree extends JPanel implements ActionListener {
 
     private JButton addNode, removeNode, levelOrderTraverse, inOrderTravers, leftRotate, rightRotate;
     private DrawPanel drawPanel;
-    private String attachNode, detachNode;
+    private String attachNode, detachNode, rotateNode;
 
     private BinarySearchTree<String> bst = new BinarySearchTree<>();
 
@@ -80,12 +80,30 @@ public class GUITree extends JPanel implements ActionListener {
         if(source == addNode) {
             attachNode = JOptionPane.showInputDialog("Add Node");
             bst.add(attachNode);
+            System.out.println("Add: " + attachNode);
+
         }
 
         if(source == removeNode) {
             detachNode = JOptionPane.showInputDialog("Remove Node");
             bst.remove(detachNode);
+            System.out.println("Remove: " + detachNode);
         }
+
+        if(source == leftRotate) {
+            rotateNode = JOptionPane.showInputDialog("Left Rotation");
+            bst.findNode(rotateNode, false);
+            System.out.println("Left Rotate: " + rotateNode);
+
+        }
+
+        if(source == rightRotate) {
+            rotateNode = JOptionPane.showInputDialog("Right Rotation");
+            bst.findNode(rotateNode, true);
+            System.out.println("Right Rotate: " + rotateNode);
+
+        }
+
 
         drawPanel.repaint();
     }
