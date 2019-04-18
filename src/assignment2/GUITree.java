@@ -92,14 +92,14 @@ public class GUITree extends JPanel implements ActionListener {
 
         if(source == leftRotate) {
             rotateNode = JOptionPane.showInputDialog("Left Rotation");
-            bst.findNode(rotateNode, false);
+            bst.findNode(rotateNode, true);
             System.out.println("Left Rotate: " + rotateNode);
 
         }
 
         if(source == rightRotate) {
             rotateNode = JOptionPane.showInputDialog("Right Rotation");
-            bst.findNode(rotateNode, true);
+            bst.findNode(rotateNode, false);
             System.out.println("Right Rotate: " + rotateNode);
 
         }
