@@ -15,7 +15,7 @@ public class RandomObtainableList<E> extends ArrayList<E> implements RandomObtai
     @Override
     public E getRandom() {
         // Generate random number from 0 to this.size - 1
-        // GET and return random item from parent ArrayList
+        // GET and return random item from getParent ArrayList
         // hint: look at the available functions from the "this" keyword
         return this.get(random.nextInt((this.size() - 1)));
     }
@@ -23,7 +23,7 @@ public class RandomObtainableList<E> extends ArrayList<E> implements RandomObtai
     @Override
     public boolean removeRandom() {
         // Generate random number from 0 to this.size - 1
-        // REMOVE and return random item from parent ArrayList
+        // REMOVE and return random item from getParent ArrayList
         // hint: look at the available functions from the "this" keyword
         return this.remove(random.nextInt((this.size() - 1))) != null;
     }

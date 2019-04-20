@@ -1,6 +1,5 @@
 package src.assignment2;
 
-import javax.sound.midi.SysexMessage;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.util.AbstractSet;
@@ -9,10 +8,7 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.NoSuchElementException;
-import java.util.Queue;
 import java.util.SortedSet;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class BinarySearchTree<E> extends AbstractSet<E>
         implements SortedSet<E> {
@@ -126,6 +122,7 @@ public class BinarySearchTree<E> extends AbstractSet<E>
         boolean added = false;
         if (rootNode == null) {
             rootNode = newNode;
+            rootNode.setParent(null);
             added = true;
         } else {  // find where to add newNode
             BinaryTreeNode currentNode = rootNode;
@@ -135,8 +132,8 @@ public class BinarySearchTree<E> extends AbstractSet<E>
                 if (comparison < 0) // newNode is less than currentNode
                 {
                     if (currentNode.leftChild == null) {
-                        System.out.println("Parent: " + currentNode.parent + "Child: " +currentNode);
-
+                        System.out.println("Parent: " + currentNode + "Child: " + newNode);
+                        newNode.setParent(currentNode);
                         // add newNode as leftChild
                         currentNode.leftChild = newNode;
                         done = true;
@@ -146,6 +143,10 @@ public class BinarySearchTree<E> extends AbstractSet<E>
                 } else if (comparison > 0)//newNode is greater than currentNode
                 {
                     if (currentNode.rightChild == null) {
+                        newNode.setParent(currentNode);
+                        System.out.println("Parent: " + currentNode + "Child: " + newNode);
+
+
                         // add newNode as rightChild
                         currentNode.rightChild = newNode;
                         done = true;
@@ -244,7 +245,7 @@ public class BinarySearchTree<E> extends AbstractSet<E>
                 }
                 while (replacementNode.leftChild != null);
                 // move the right child of replacementNode to be the left
-                // child of the parent of replacementNode
+                // child of the getParent of replacementNode
                 parentNode.leftChild = replacementNode.rightChild;
                 // move the children of removalNode to be children of
                 // replacementNode
@@ -281,7 +282,6 @@ public class BinarySearchTree<E> extends AbstractSet<E>
                 leftRotate(currentNode);
             } else {
                 rightRotate(currentNode);
-
             }
 
         } catch (NullPointerException e) {
@@ -292,118 +292,50 @@ public class BinarySearchTree<E> extends AbstractSet<E>
     }
 
     private void leftRotate(BinaryTreeNode rotateNode) {
-        //No right child to rotate left (be the parent)
+
         if (rotateNode.rightChild == null) {
             System.out.println("Can not perform left rotation, not right child.");
             return;
         }
-        // the old right node is the right child of the rotationNode
-        BinaryTreeNode oldRight = rotateNode.rightChild;
 
-        //right child is now the left child
+        BinaryTreeNode oldRight = rotateNode.rightChild;
         rotateNode.rightChild = oldRight.leftChild;
 
-        System.out.println(rotateNode.parent);
         if (rotateNode.parent == null) {
             rootNode = oldRight;
-            System.out.println("this is always true");
-        } else  if (rotateNode.leftChild == rotateNode) {
-            rotateNode.leftChild = oldRight;
+        } else if (rotateNode.parent.leftChild == rotateNode) {
+            rotateNode.parent.leftChild = oldRight;
         } else {
-            rotateNode.rightChild = oldRight;
+            rotateNode.parent.rightChild = oldRight;
         }
+
         oldRight.leftChild = rotateNode;
+        rotateNode.setParent(oldRight);
     }
 
 
-
     private void rightRotate(BinaryTreeNode rotateNode) {
-        if(rotateNode.leftChild ==  null) {
+
+        if (rotateNode.leftChild == null) {
             System.out.println("Can not perform left rotation, not right child.");
             return;
         }
 
         BinaryTreeNode oldLeft = rotateNode.leftChild;
-
-        //right child is now the left child
         rotateNode.leftChild = oldLeft.rightChild;
 
         if (rotateNode.parent == null) {
             rootNode = oldLeft;
-            System.out.println("this is always true");
-        } else if (rotateNode.leftChild == rotateNode) {
-            rotateNode.leftChild = oldLeft;
+        } else if (rotateNode.parent.leftChild == rotateNode) {
+            rotateNode.parent.leftChild = oldLeft;
         } else {
-            rotateNode.rightChild = oldLeft;
+            rotateNode.parent.rightChild = oldLeft;
         }
 
         oldLeft.rightChild = rotateNode;
+        rotateNode.setParent(oldLeft);
+
     }
-
-    // attempt 1
-//    if (n.getRight() == null) {
-//        return;
-//    }
-//    BinaryTreeNode<E> oldRight = n.getRight();
-//        n.setRight(oldRight.getLeft());
-//        if (n.getParent() == null) {
-//        root = oldRight;
-//    } else if (n.getParent().getLeft() == n) {
-//        n.getParent().setLeft(oldRight);
-//    } else {
-//        n.getParent().setRight(oldRight);
-//    }
-//        oldRight.setLeft(n);
-
-
-    //attempt2
-//    void leftRotate(node x){
-//        node right = rotateNode.rightChild;
-//        rotateNode.rightChild = right.leftChild;
-//        if(right.leftChild != null){
-//            right.leftChild.parent = rotateNode;
-//        }
-//        right.parent = rotateNode.parent;
-//        if(rotateNode.parent == null)
-//            this.root = right;
-//        else if(rotateNode == rotateNode.parent.leftChild){
-//            rotateNode.parent.leftChild = right;
-//        }
-//        else{
-//            rotateNode.parent.rightChild = right;
-//        }
-//        right.leftChild = rotateNode;
-//        rotateNode.parent = right;
-//    }
-
-// attempt 3
-//    BinaryTreeNode y = rotateNode.rightChild;
-//        if(y == null) {
-//            System.out.println("Can not perform left rotation, not right child.");
-//            return;
-//        }
-//
-//        rotateNode.leftChild = y.rightChild;
-//        if(y.leftChild != null){
-//            y.leftChild.setParent(rotateNode);
-//        }
-//
-//
-//        y.setParent(rotateNode.parent());
-//
-//        if(rotateNode.parent() == null) {
-//            rootNode = y;
-//        } else if (rotateNode == rotateNode.parent().leftChild) {
-//            rotateNode.parent().leftChild = y;
-//        } else {
-//            rotateNode.parent().rightChild = y;
-//        }
-//
-//        y.leftChild = rotateNode;
-//        rotateNode.setParent(y);
-//
-////        rotateNode.parent = y;
-
 
     public Iterator<E> iterator() {
         return new BinaryTreeIterator(rootNode);
@@ -552,7 +484,7 @@ public class BinarySearchTree<E> extends AbstractSet<E>
 
     // inner class that represents a node in the binary tree
     // where each node consists of the element and links to
-    // left child and right child (no need for link to parent)
+    // left child and right child (no need for link to getParent)
     protected class BinaryTreeNode {
         public BinaryTreeNode leftChild, rightChild, parent;
         public E element;
@@ -569,7 +501,7 @@ public class BinarySearchTree<E> extends AbstractSet<E>
             this.parent = parent;
         }
 
-        public BinaryTreeNode parent() {
+        public BinaryTreeNode getParent() {
             return parent;
         }
 
