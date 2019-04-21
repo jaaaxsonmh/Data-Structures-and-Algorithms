@@ -14,9 +14,9 @@ import javax.swing.*;
 
 public class GUITree extends JPanel implements ActionListener {
 
-    private JButton addNode, removeNode, levelOrderTraverse, inOrderTravers, leftRotate, rightRotate;
+    private JButton addNode, removeNode, levelOrderTraverse, inOrderTraverse, leftRotate, rightRotate;
     private DrawPanel drawPanel;
-    private String attachNode, detachNode, rotateNode;
+    private String attachNode, detachNode, rotateNode, inOrderNode;
 
     private BinarySearchTree<String> bst = new BinarySearchTree<>();
 
@@ -43,9 +43,9 @@ public class GUITree extends JPanel implements ActionListener {
         levelOrderTraverse.addActionListener(this);
         buttonPanel.add(levelOrderTraverse);
 
-        inOrderTravers = new JButton("In Order Traverse");
-        inOrderTravers.addActionListener(this);
-        buttonPanel.add(inOrderTravers);
+        inOrderTraverse = new JButton("In Order Traverse");
+        inOrderTraverse.addActionListener(this);
+        buttonPanel.add(inOrderTraverse);
 
         leftRotate = new JButton("Left Rotate");
         leftRotate.addActionListener(this);
@@ -92,16 +92,21 @@ public class GUITree extends JPanel implements ActionListener {
 
         if(source == leftRotate) {
             rotateNode = JOptionPane.showInputDialog("Left Rotation");
-            bst.findNode(rotateNode, true);
+            BinarySearchTree.BinaryTreeNode node = bst.findNode(rotateNode);
+            bst.leftRotate(node);
             System.out.println("Left Rotate: " + rotateNode);
 
         }
 
         if(source == rightRotate) {
             rotateNode = JOptionPane.showInputDialog("Right Rotation");
-            bst.findNode(rotateNode, false);
+            BinarySearchTree.BinaryTreeNode node = bst.findNode(rotateNode);
+            bst.rightRotate(node);
             System.out.println("Right Rotate: " + rotateNode);
+        }
 
+        if(source == inOrderTraverse){
+            bst.inOrder(bst.rootNode);
         }
 
 

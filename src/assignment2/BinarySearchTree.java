@@ -230,7 +230,7 @@ public class BinarySearchTree<E> extends AbstractSet<E>
             replacementNode = removalNode.rightChild;
             // check case when removalNode has two children
         else if (removalNode.leftChild != null
-                && removalNode.rightChild != null) {  // find the inorder successor and use it as replacementNode
+                && removalNode.rightChild != null) {  // find the inOrder successor and use it as replacementNode
             BinaryTreeNode parentNode = removalNode;
             replacementNode = removalNode.rightChild;
             if (replacementNode.leftChild == null)
@@ -260,11 +260,11 @@ public class BinarySearchTree<E> extends AbstractSet<E>
     // Purpose is to take a String (Object) and
     // and find its Node counterpart.
     // Catch null pointers if not in bst, or no input.
-    public void findNode(Object o, Boolean direction) {
+    public BinaryTreeNode findNode(Object o) {
         boolean found = false;
         E element = (E) o; // unchecked, could throw exception
+        BinaryTreeNode currentNode = rootNode;
         try {
-            BinaryTreeNode currentNode = rootNode;
             while (!found && currentNode != null) {
                 int comparison = compare(currentNode.element, element);
                 if (comparison == 0) {
@@ -277,21 +277,15 @@ public class BinarySearchTree<E> extends AbstractSet<E>
                     currentNode = currentNode.leftChild;
                 }
             }
-            //true = right rotation
-            if (direction) {
-                leftRotate(currentNode);
-            } else {
-                rightRotate(currentNode);
-            }
 
         } catch (NullPointerException e) {
             System.out.println("NullPointerException caught");
         }
 
-
+        return currentNode;
     }
 
-    private void leftRotate(BinaryTreeNode rotateNode) {
+    public void leftRotate(BinaryTreeNode rotateNode) {
 
         if (rotateNode.rightChild == null) {
             System.out.println("Can not perform left rotation, not right child.");
@@ -314,7 +308,7 @@ public class BinarySearchTree<E> extends AbstractSet<E>
     }
 
 
-    private void rightRotate(BinaryTreeNode rotateNode) {
+    public void rightRotate(BinaryTreeNode rotateNode) {
 
         if (rotateNode.leftChild == null) {
             System.out.println("Can not perform left rotation, not right child.");
@@ -335,6 +329,19 @@ public class BinarySearchTree<E> extends AbstractSet<E>
         oldLeft.rightChild = rotateNode;
         rotateNode.setParent(oldLeft);
 
+    }
+
+    // Each node in tree
+    // Start with smallest and end with largest value (left -> right)
+    //
+    public void inOrder(BinaryTreeNode node)
+    {
+        if (node == null)
+            return;
+
+        inOrder(node.leftChild);
+        System.out.println(node.element+ ", ");
+        inOrder(node.rightChild);
     }
 
     public Iterator<E> iterator() {
@@ -449,7 +456,7 @@ public class BinarySearchTree<E> extends AbstractSet<E>
 
 
     // outputs the elements stored in the full binary tree (not just
-    // the view) using inorder traversal
+    // the view) using inOrder traversal
     public String toString() {
         return "Tree: " + rootNode;
     }
@@ -507,7 +514,7 @@ public class BinarySearchTree<E> extends AbstractSet<E>
 
 
         // returns a string representation of the node and
-        // its children using inorder (left-this-right) traversal
+        // its children using inOrder (left-this-right) traversal
         public String toString() {
             String output = "[";
             if (leftChild != null)
@@ -525,7 +532,7 @@ public class BinarySearchTree<E> extends AbstractSet<E>
         private LinkedList<E> list;
         private Iterator<E> iterator;
 
-        public BinaryTreeIterator(BinaryTreeNode rootNode) {  // puts the elements in a linked list using inorder traversal
+        public BinaryTreeIterator(BinaryTreeNode rootNode) {  // puts the elements in a linked list using inOrder traversal
             list = new LinkedList<E>();
             traverseInOrder(rootNode);
             iterator = list.iterator();
