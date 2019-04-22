@@ -19,6 +19,7 @@ public class GUITree extends JPanel implements ActionListener {
 
     private BinarySearchTree<String> bst = new BinarySearchTree<>();
 
+
     private int width = 800;
 
 
