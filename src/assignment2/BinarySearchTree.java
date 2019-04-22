@@ -2,13 +2,7 @@ package src.assignment2;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.util.AbstractSet;
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.NoSuchElementException;
-import java.util.SortedSet;
+import java.util.*;
 
 public class BinarySearchTree<E> extends AbstractSet<E>
         implements SortedSet<E> {
@@ -159,7 +153,9 @@ public class BinarySearchTree<E> extends AbstractSet<E>
 
             }
         }
-        if (added) numElements++;
+        if (added) {
+            numElements++;
+        }
         return added;
     }
 
@@ -283,98 +279,6 @@ public class BinarySearchTree<E> extends AbstractSet<E>
         }
 
         return currentNode;
-    }
-
-    public void leftRotate(BinaryTreeNode rotateNode) {
-
-        if (rotateNode.rightChild == null) {
-            System.out.println("Can not perform left rotation, not right child.");
-            return;
-        }
-
-        BinaryTreeNode oldRight = rotateNode.rightChild;
-        rotateNode.rightChild = oldRight.leftChild;
-
-        if (rotateNode.parent == null) {
-            rootNode = oldRight;
-        } else if (rotateNode.parent.leftChild == rotateNode) {
-            rotateNode.parent.leftChild = oldRight;
-        } else {
-            rotateNode.parent.rightChild = oldRight;
-        }
-
-        oldRight.leftChild = rotateNode;
-        rotateNode.setParent(oldRight);
-    }
-
-
-    public void rightRotate(BinaryTreeNode rotateNode) {
-
-        if (rotateNode.leftChild == null) {
-            System.out.println("Can not perform left rotation, not right child.");
-            return;
-        }
-
-        BinaryTreeNode oldLeft = rotateNode.leftChild;
-        rotateNode.leftChild = oldLeft.rightChild;
-
-        if (rotateNode.parent == null) {
-            rootNode = oldLeft;
-        } else if (rotateNode.parent.leftChild == rotateNode) {
-            rotateNode.parent.leftChild = oldLeft;
-        } else {
-            rotateNode.parent.rightChild = oldLeft;
-        }
-
-        oldLeft.rightChild = rotateNode;
-        rotateNode.setParent(oldLeft);
-
-    }
-
-    // Each node in tree
-    // Start with smallest and end with largest value (left -> right)
-    //
-    public void inOrderTraversal(BinaryTreeNode node) {
-        if (node == null)
-            return;
-
-        try {
-            inOrderTraversal(node.leftChild);
-            Thread.sleep(500);
-            node.visit = true;
-            System.out.print(node.element + " ");
-            inOrderTraversal(node.rightChild);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void levelOrderTraversal(BinaryTreeNode node, int level) {
-        try {
-            // first call, root at level 1 so print as first.
-            if (level == 1) {
-                System.out.print(rootNode.element + " ");
-                rootNode.visit = true;
-                levelOrderTraversal(node, 2);
-
-            } else if (level > 1) {
-                Thread.sleep(500);
-
-                if (node.leftChild != null) {
-                    System.out.print(node.leftChild.element + " ");
-                    node.leftChild.visit = true;
-                    levelOrderTraversal(node.leftChild, level + 1);
-                }
-
-                if (node.rightChild != null) {
-                    System.out.print(node.rightChild.element + " ");
-                    node.rightChild.visit = true;
-                    levelOrderTraversal(node.rightChild, level + 1);
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     public Iterator<E> iterator() {
@@ -527,7 +431,117 @@ public class BinarySearchTree<E> extends AbstractSet<E>
     }
 
     public void startLevelOrder() {
-        new Thread(() -> levelOrderTraversal(rootNode, 1)).start();
+        new Thread(this::levelOrderTraversal).start();
+    }
+
+    public void resetVisited(BinaryTreeNode node) {
+        //if node has no children (or root) then break.
+        if(node == null)
+            return;
+
+        // set the node to be un-visited
+        node.visit = false;
+        //recursion for the nodes children
+        resetVisited(node.leftChild);
+        resetVisited(node.rightChild);
+    }
+
+    public void leftRotate(BinaryTreeNode rotateNode) {
+
+        if (rotateNode.rightChild == null) {
+            System.out.println("Can not perform left rotation, not right child.");
+            return;
+        }
+
+        BinaryTreeNode oldRight = rotateNode.rightChild;
+        rotateNode.rightChild = oldRight.leftChild;
+
+        if (rotateNode.parent == null) {
+            rootNode = oldRight;
+        } else if (rotateNode.parent.leftChild == rotateNode) {
+            rotateNode.parent.leftChild = oldRight;
+        } else {
+            rotateNode.parent.rightChild = oldRight;
+        }
+
+        oldRight.leftChild = rotateNode;
+        rotateNode.setParent(oldRight);
+    }
+
+
+    public void rightRotate(BinaryTreeNode rotateNode) {
+
+        if (rotateNode.leftChild == null) {
+            System.out.println("Can not perform left rotation, not right child.");
+            return;
+        }
+
+        BinaryTreeNode oldLeft = rotateNode.leftChild;
+        rotateNode.leftChild = oldLeft.rightChild;
+
+        if (rotateNode.parent == null) {
+            rootNode = oldLeft;
+        } else if (rotateNode.parent.leftChild == rotateNode) {
+            rotateNode.parent.leftChild = oldLeft;
+        } else {
+            rotateNode.parent.rightChild = oldLeft;
+        }
+
+        oldLeft.rightChild = rotateNode;
+        rotateNode.setParent(oldLeft);
+
+    }
+
+    public void inOrderTraversal(BinaryTreeNode node) {
+        try {
+            if (node == null)
+                return;
+
+            inOrderTraversal(node.leftChild);
+            Thread.sleep(500);
+            node.visit = true;
+            System.out.print(node.element + " ");
+            inOrderTraversal(node.rightChild);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void levelOrderTraversal() {
+        // We want to recurse the node for every level of both the right and left subtrees
+        for (int i = 1; i <= height(rootNode); i++) {
+            levelOrderNode(rootNode, i);
+        }
+    }
+
+
+    public void levelOrderNode(BinaryTreeNode node, int level) {
+        try {
+            if (node == null) {
+                return;
+            }
+
+            if (level == 1) {
+                System.out.print(node.element + " ");
+                Thread.sleep(500);
+
+                node.visit = true;
+            } else if (level > 1) {
+                levelOrderNode(node.leftChild, level - 1);
+                levelOrderNode(node.rightChild, level - 1);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    // helper method that determines the height of the subtrees to the lowest/ farthest leaf node
+    public int height(BinaryTreeNode root) {
+        if (root == null) {
+            return 0;
+        } else {
+            return Math.max(height(root.leftChild), height(root.rightChild)) + 1;
+        }
     }
 
     // inner class that represents a node in the binary tree
