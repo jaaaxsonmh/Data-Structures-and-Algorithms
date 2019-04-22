@@ -48,18 +48,36 @@ public class ArraySorter<E extends Comparable> {
             }
         }
     }
+    
+    
+    /*
+    * The cocktail sort can be optimized by adding two variables that dynamically track the end, and start
+    * At the first iteration these are initilized to the end position, and the start position. 
+    * We then take these starts and ends and add them into where the index is for the top-> bottom loop
+    * and the index is for the bottom -> top loop
+    * where the bottom starts at the start (0) and the top starts at the end (list.length) 
+    * once we sort an element we can decrease the end or start. If the element is pushed from bottom to top,
+    * then the last index is now sorted so the end can be decreased by 1. and if we push from top to bottom then
+    * the first index is now sorted so we can increase the start by 1. (rinse and repeat for every operation)
+    *
+    * This decreases the part of the list that is sorted every time and will essentially half the amount of operations. 
+    * Without this operation being optimized, it would go from the start (0) to the end (list.length) every time.
+    * With this operation being optimized, it would go from the start (0) + n to the end (list.length) - n every time.
+    * and each operation reduces the amount of checked elements in the list, because they are now sorted and dont need to be touched.
+    *
+    * Asymptotic Complexity: O(n^2)
+    */
 
     public void cocktailSort(E[] list) {
         int end = list.length;
         int start = 0;
         boolean swapped = true;
         E temp;
-
+        
         System.out.println(Arrays.toString(list));
-
+        
         while(swapped) {
             swapped = false;
-
             //bottom to top comparison.
             for(int i = start; i < end - 1; i++){
                 if (list[i].compareTo(list[i + 1]) > 0) {  // swap the elements at indices i and i+1
@@ -71,7 +89,6 @@ public class ArraySorter<E extends Comparable> {
 
                 }
             }
-
             // if swapped is false, then nothing has been moved and we can exit as list will be sorted.
             if(!swapped)
                 break;
@@ -85,13 +102,12 @@ public class ArraySorter<E extends Comparable> {
 
             //top to bottom comparison.
             for(int i = end - 1; i >= start; i--) {
-                if (list[i].compareTo(list[i + 1]) > 0) {  // swap the elements at indices i+1 and i
+                if (list[i].compareTo(list[i + 1]) > 0) {  // swap the elements at indices i and i+1
                     temp = list[i];
                     list[i] =  list[i + 1];
                     list[i + 1] = temp;
                     swapped = true;
                     System.out.println(Arrays.toString(list));
-
                 }
             }
 
