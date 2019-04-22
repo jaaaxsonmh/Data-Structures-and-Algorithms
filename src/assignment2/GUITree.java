@@ -80,36 +80,36 @@ public class GUITree extends JPanel implements ActionListener {
         if(source == addNode) {
             attachNode = JOptionPane.showInputDialog("Add Node");
             bst.add(attachNode);
-            System.out.println("Add: " + attachNode);
-
+            System.out.println("\nAdd: " + attachNode);
         }
 
         if(source == removeNode) {
             detachNode = JOptionPane.showInputDialog("Remove Node");
             bst.remove(detachNode);
-            System.out.println("Remove: " + detachNode);
+            System.out.println("\nRemove: " + detachNode);
         }
 
         if(source == leftRotate) {
             rotateNode = JOptionPane.showInputDialog("Left Rotation");
             BinarySearchTree.BinaryTreeNode node = bst.findNode(rotateNode);
             bst.leftRotate(node);
-            System.out.println("Left Rotate: " + rotateNode);
-
+            System.out.println("\nLeft Rotate: " + rotateNode);
         }
 
         if(source == rightRotate) {
             rotateNode = JOptionPane.showInputDialog("Right Rotation");
             BinarySearchTree.BinaryTreeNode node = bst.findNode(rotateNode);
             bst.rightRotate(node);
-            System.out.println("Right Rotate: " + rotateNode);
+            System.out.println("\nRight Rotate: " + rotateNode);
         }
 
         if(source == inOrderTraverse){
+            System.out.println();
             bst.startInOrder();
         }
 
         if(source == levelOrderTraverse){
+            System.out.println();
             bst.startLevelOrder();
         }
 

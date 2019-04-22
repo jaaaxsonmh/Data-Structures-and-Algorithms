@@ -340,7 +340,7 @@ public class BinarySearchTree<E> extends AbstractSet<E>
 
         try {
             inOrderTraversal(node.leftChild);
-            Thread.sleep(1000);
+            Thread.sleep(500);
             node.visit = true;
             System.out.print(node.element + " ");
             inOrderTraversal(node.rightChild);
@@ -349,7 +349,32 @@ public class BinarySearchTree<E> extends AbstractSet<E>
         }
     }
 
-    public void levelOrderTraversal(BinaryTreeNode node) {
+    public void levelOrderTraversal(BinaryTreeNode node, int level) {
+        try {
+            // first call, root at level 1 so print as first.
+            if (level == 1) {
+                System.out.print(rootNode.element + " ");
+                rootNode.visit = true;
+                levelOrderTraversal(node, 2);
+
+            } else if (level > 1) {
+                Thread.sleep(500);
+
+                if (node.leftChild != null) {
+                    System.out.print(node.leftChild.element + " ");
+                    node.leftChild.visit = true;
+                    levelOrderTraversal(node.leftChild, level + 1);
+                }
+
+                if (node.rightChild != null) {
+                    System.out.print(node.rightChild.element + " ");
+                    node.rightChild.visit = true;
+                    levelOrderTraversal(node.rightChild, level + 1);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public Iterator<E> iterator() {
@@ -502,7 +527,7 @@ public class BinarySearchTree<E> extends AbstractSet<E>
     }
 
     public void startLevelOrder() {
-        new Thread(() -> levelOrderTraversal(rootNode)).start();
+        new Thread(() -> levelOrderTraversal(rootNode, 1)).start();
     }
 
     // inner class that represents a node in the binary tree
