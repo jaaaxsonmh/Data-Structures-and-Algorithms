@@ -108,11 +108,13 @@ public class GUITree extends JPanel implements ActionListener {
 
         if (source == inOrderTraverse) {
             System.out.println();
+            System.out.print("In Order Traversal: ");
             bst.startInOrder();
         }
 
         if (source == levelOrderTraverse) {
             System.out.println();
+            System.out.print("Level Order Traversal: ");
             bst.startLevelOrder();
         }
 

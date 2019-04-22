@@ -126,7 +126,6 @@ public class BinarySearchTree<E> extends AbstractSet<E>
                 if (comparison < 0) // newNode is less than currentNode
                 {
                     if (currentNode.leftChild == null) {
-                        System.out.println("Parent: " + currentNode + "Child: " + newNode);
                         newNode.setParent(currentNode);
                         // add newNode as leftChild
                         currentNode.leftChild = newNode;
@@ -138,8 +137,6 @@ public class BinarySearchTree<E> extends AbstractSet<E>
                 {
                     if (currentNode.rightChild == null) {
                         newNode.setParent(currentNode);
-                        System.out.println("Parent: " + currentNode + "Child: " + newNode);
-
 
                         // add newNode as rightChild
                         currentNode.rightChild = newNode;
