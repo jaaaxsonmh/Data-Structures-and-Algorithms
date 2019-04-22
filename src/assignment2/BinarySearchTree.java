@@ -230,7 +230,7 @@ public class BinarySearchTree<E> extends AbstractSet<E>
             replacementNode = removalNode.rightChild;
             // check case when removalNode has two children
         else if (removalNode.leftChild != null
-                && removalNode.rightChild != null) {  // find the inOrder successor and use it as replacementNode
+                && removalNode.rightChild != null) {  // find the inOrderTraversal successor and use it as replacementNode
             BinaryTreeNode parentNode = removalNode;
             replacementNode = removalNode.rightChild;
             if (replacementNode.leftChild == null)
@@ -334,14 +334,22 @@ public class BinarySearchTree<E> extends AbstractSet<E>
     // Each node in tree
     // Start with smallest and end with largest value (left -> right)
     //
-    public void inOrder(BinaryTreeNode node)
-    {
+    public void inOrderTraversal(BinaryTreeNode node) {
         if (node == null)
             return;
 
-        inOrder(node.leftChild);
-        System.out.println(node.element+ ", ");
-        inOrder(node.rightChild);
+        try {
+            inOrderTraversal(node.leftChild);
+            Thread.sleep(1000);
+            node.visit = true;
+            System.out.print(node.element + " ");
+            inOrderTraversal(node.rightChild);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void levelOrderTraversal(BinaryTreeNode node) {
     }
 
     public Iterator<E> iterator() {
@@ -456,7 +464,7 @@ public class BinarySearchTree<E> extends AbstractSet<E>
 
 
     // outputs the elements stored in the full binary tree (not just
-    // the view) using inOrder traversal
+    // the view) using inOrderTraversal traversal
     public String toString() {
         return "Tree: " + rootNode;
     }
@@ -489,6 +497,14 @@ public class BinarySearchTree<E> extends AbstractSet<E>
         System.out.println("last element in subtree: " + subtree.last());
     }
 
+    public void startInOrder() {
+        new Thread(() -> inOrderTraversal(rootNode)).start();
+    }
+
+    public void startLevelOrder() {
+        new Thread(() -> levelOrderTraversal(rootNode)).start();
+    }
+
     // inner class that represents a node in the binary tree
     // where each node consists of the element and links to
     // left child and right child (no need for link to getParent)
@@ -514,7 +530,7 @@ public class BinarySearchTree<E> extends AbstractSet<E>
 
 
         // returns a string representation of the node and
-        // its children using inOrder (left-this-right) traversal
+        // its children using inOrderTraversal (left-this-right) traversal
         public String toString() {
             String output = "[";
             if (leftChild != null)
@@ -532,7 +548,7 @@ public class BinarySearchTree<E> extends AbstractSet<E>
         private LinkedList<E> list;
         private Iterator<E> iterator;
 
-        public BinaryTreeIterator(BinaryTreeNode rootNode) {  // puts the elements in a linked list using inOrder traversal
+        public BinaryTreeIterator(BinaryTreeNode rootNode) {  // puts the elements in a linked list using inOrderTraversal traversal
             list = new LinkedList<E>();
             traverseInOrder(rootNode);
             iterator = list.iterator();

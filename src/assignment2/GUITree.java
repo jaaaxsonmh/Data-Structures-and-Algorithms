@@ -106,9 +106,12 @@ public class GUITree extends JPanel implements ActionListener {
         }
 
         if(source == inOrderTraverse){
-            bst.inOrder(bst.rootNode);
+            bst.startInOrder();
         }
 
+        if(source == levelOrderTraverse){
+            bst.startLevelOrder();
+        }
 
         drawPanel.repaint();
     }
