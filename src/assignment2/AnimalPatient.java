@@ -29,6 +29,8 @@ import javax.swing.event.DocumentListener;
 /**
  *
  * @author sehall
+ * @author Jack Hosking
+ * Student ID: 16932920
  */
 public class AnimalPatient{
     private String species;

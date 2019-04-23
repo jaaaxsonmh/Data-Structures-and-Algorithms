@@ -4,6 +4,11 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.util.*;
 
+/**
+ * @author Jack Hosking
+ * Student ID: 16932920
+ */
+
 public class BinarySearchTree<E> extends AbstractSet<E>
         implements SortedSet<E> {
     private int numElements;

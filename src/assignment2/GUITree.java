@@ -1,7 +1,7 @@
 package src.assignment2;
 
-/*
- * author Jack Hosking
+/**
+ * @author Jack Hosking
  * Student ID: 16932920
  */
 

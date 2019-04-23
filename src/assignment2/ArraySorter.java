@@ -2,6 +2,11 @@ package src.assignment2;
 
 import java.util.Arrays;
 
+/**
+ * @author Jack Hosking
+ * Student ID: 16932920
+ */
+
 public class ArraySorter<E extends Comparable> {
     public void selectionSort(E[] list) {
         int indexMin; // index of least element
