@@ -10,7 +10,7 @@ import java.awt.Image;
 import java.awt.Point;
 import java.awt.Toolkit;
 import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.*;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -32,7 +32,7 @@ import javax.swing.event.DocumentListener;
  * @author Jack Hosking
  * Student ID: 16932920
  */
-public class AnimalPatient{
+public class AnimalPatient<E> extends ArrayList<E> {
     private String species;
     private String name;
     private ImageIcon image;
@@ -41,11 +41,37 @@ public class AnimalPatient{
     private String symptoms;
     private String treatment;
     private JPanel displayPanel;
+    private Comparator<? super E> comparator;
+    private int numElements;
+
+    public AnimalPatient() {
+        super();
+        numElements = 0;
+        comparator = null;
+        symptoms = null;
+        treatment = null;
+        dateLastSeen = null;
+        image = null;
+        name = null;
+        species = null;
+    }
 
     public AnimalPatient(String species, String name)
     {
         this(species, name, new Date());
     }
+
+    public AnimalPatient(int priority, String name, String species)
+    {
+        this.species = species;
+        this.name = name;
+        this.dateLastSeen = dateLastSeen;
+        symptoms = "unknown";
+        treatment = null;
+        image = null;
+        this.priority = priority;
+    }
+
     public AnimalPatient(String species, String name, Date dateLastSeen)
     {
         this.species = species;
@@ -56,6 +82,7 @@ public class AnimalPatient{
         image = null;
         priority = 1;
     }
+
     public void updateDate(Date date)
     {
         dateLastSeen = date;
