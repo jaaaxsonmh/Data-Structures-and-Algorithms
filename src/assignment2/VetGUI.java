@@ -115,6 +115,7 @@ public class VetGUI extends JPanel {
             animalPatient.updateDate(new Date());
             animalPatient.setPriority(9);
             processor.addAnimal(animalPatient);
+
             updatePanel();
         }
     }
