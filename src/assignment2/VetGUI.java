@@ -19,16 +19,13 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 
-public class VetGUI extends JPanel implements ActionListener {
+public class VetGUI extends JPanel {
 
     private static final String W3C_XML_SCHEMA  = "http://www.w3.org/2001/XMLSchema";
+    private static final String JAXP_SCHEMA_LANGUAGE  = "http://java.sun.com/xml/jaxp/properties/schemaLanguage";
 
-    private static JFrame frame;
     private JButton newPatient, seeLater, release, loadXML, saveXML, updatePic;
-    private DrawPanel drawPanel;
-    private JFileChooser jFileChooser;
-    private Document currentDocument;
-    private AnimalProcessor animal;
+    private JPanel drawPanel;
 
     private int width = 800;
 
@@ -36,77 +33,57 @@ public class VetGUI extends JPanel implements ActionListener {
     public VetGUI() {
         super(new BorderLayout());
 
-        jFileChooser = new JFileChooser();
 
-        drawPanel = new DrawPanel();
+
+        drawPanel = new JPanel();
+        drawPanel.setPreferredSize(new Dimension(width, 600));
+        drawPanel.setBackground(Color.WHITE);
         add(drawPanel, BorderLayout.CENTER);
 
         JPanel buttonPanel = new JPanel();
         newPatient = new JButton("New Patient");
-        newPatient.addActionListener(this);
+        newPatient.addActionListener((action) -> newPatient());
         buttonPanel.add(newPatient);
 
         seeLater = new JButton("See Later");
-        seeLater.addActionListener(this);
+        seeLater.addActionListener((action) -> seeLater());
         buttonPanel.add(seeLater);
 
         release = new JButton("Release");
-        release.addActionListener(this);
+        release.addActionListener((action) -> release());
         buttonPanel.add(release);
 
         loadXML = new JButton("Load XML");
-        loadXML.addActionListener(this);
+        loadXML.addActionListener((action) -> loadXML());
         buttonPanel.add(loadXML);
 
         saveXML = new JButton("Save XML");
-        saveXML.addActionListener(this);
+        saveXML.addActionListener((action) -> saveXML());
         buttonPanel.add(saveXML);
 
         updatePic = new JButton("Update Pic");
-        updatePic.addActionListener(this);
+        updatePic.addActionListener((action) -> updatePic());
         buttonPanel.add(updatePic);
 
         add(buttonPanel, BorderLayout.SOUTH);
-
-
-        Timer timer = new Timer(25, this);
-        timer.start();
     }
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        Object source = e.getSource();
+    private void seeLater() {
+    }
 
-        if(source == loadXML) {
-            int val = jFileChooser.showOpenDialog(this);
-            if (val == JFileChooser.APPROVE_OPTION) {
-                File file = jFileChooser.getSelectedFile();
-                try {
-                    drawPanel.removeAll();
-                    DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
-                    builderFactory.setNamespaceAware(true);
-                    builderFactory.setValidating(true);
-                    builderFactory.setAttribute("http://java.sun.com/xml/jaxp/properties/schemaLanguage", W3C_XML_SCHEMA);
-                    DocumentBuilder builder = builderFactory.newDocumentBuilder();
-                    // parse the input stream
-                    currentDocument = builder.parse(file);
-                    frame.pack();
-                }
-                catch (FactoryConfigurationError ex) {
-                    System.out.println(ex.getMessage());
-                }
-                catch (ParserConfigurationException ex) {
-                    System.out.println(ex.getMessage());
-                }
-                catch (SAXException ex) {
-                    System.out.println(ex.getMessage());
-                }
-                catch (IOException ex) {
-                    System.out.println(ex.getMessage());
-                }
-            }
-        }
-        drawPanel.repaint();
+    private void newPatient() {
+    }
+
+    private void release() {
+    }
+
+    private void loadXML() {
+    }
+
+    private void saveXML() {
+    }
+
+    private void updatePic() {
     }
 
     private class DrawPanel extends JPanel {
