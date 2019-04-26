@@ -106,6 +106,11 @@ public class AnimalPatient implements Comparable<AnimalPatient> {
         if(displayPanel != null)
             displayPanel.repaint();
     }
+
+    public String getImage() {
+        return image == null ? null : image.getDescription();
+    }
+
     public JPanel getDisplayPanel()
     {
         if(displayPanel == null)
