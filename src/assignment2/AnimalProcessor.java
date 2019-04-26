@@ -1,5 +1,10 @@
 package src.assignment2;
 
+/**
+ * @author Jack Hosking
+ * Student ID: 16932920
+ */
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 

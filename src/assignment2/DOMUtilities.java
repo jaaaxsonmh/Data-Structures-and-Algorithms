@@ -1,4 +1,6 @@
-package src.assignment2; /**
+package src.assignment2;
+
+/**
    Some utility methods for extracting information from a DOM tree
    @author Andrew Ensor
 */

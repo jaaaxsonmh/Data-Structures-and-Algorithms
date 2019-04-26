@@ -32,6 +32,7 @@ import javax.swing.event.DocumentListener;
  * @author Jack Hosking
  * Student ID: 16932920
  */
+
 public class AnimalPatient implements Comparable<AnimalPatient> {
     private String species;
     private String name;
