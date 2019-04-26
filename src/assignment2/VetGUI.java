@@ -6,6 +6,7 @@ package src.assignment2;
  */
 
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 
 import javax.swing.*;
@@ -116,6 +117,29 @@ public class VetGUI extends JPanel {
     }
 
     private void saveXML() {
+        JFileChooser chooser = new JFileChooser(new File("."));
+        int i = chooser.showSaveDialog(null);
+        if(i==JFileChooser.APPROVE_OPTION) {
+            try {
+                DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+                factory.setNamespaceAware(true);
+                DocumentBuilder documentBuilder = factory.newDocumentBuilder();
+                Document newDocument = documentBuilder.getDOMImplementation().createDocument(null, "animals", null);
+                newDocument.setXmlVersion("1.0");
+                newDocument.setXmlStandalone(true);
+                
+                Element root = newDocument.getDocumentElement();
+                root.setAttribute("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
+                root.setAttribute("xsi:noNameSpaceSchemaLocation", "animals.xsd");
+                
+                processor.getWaitList().stream().forEach((animal) -> addAnimal(newDocument, root, animal));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void addAnimal(Document newDocument, Element root, AnimalPatient animal) {
     }
 
     private void updatePic() {
