@@ -8,7 +8,10 @@ package src.assignment2;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
@@ -42,12 +45,14 @@ public class VetGUI extends JPanel {
         super(new BorderLayout());
 
         drawPanel = new JPanel();
+        drawPanel.setLayout(new GridBagLayout());
+        JLabel nullXML = new JLabel("Please load an xml file", SwingConstants.CENTER);
+        nullXML.setFont(new Font("Comic Sans", Font.BOLD, 24));
+        drawPanel.add(nullXML);
+        drawPanel.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
         drawPanel.setPreferredSize(new Dimension(width, 600));
         drawPanel.setBackground(Color.WHITE);
-        add(drawPanel, BorderLayout.CENTER);
-
-//        JLabel nullXML = new JLabel("Please load an xml file");
-//        drawPanel.add(nullXML, BorderLayout.SOUTH);
+        add(drawPanel);
 
         JPanel buttonPanel = new JPanel();
         newPatient = new JButton("New Patient");
@@ -221,14 +226,18 @@ public class VetGUI extends JPanel {
     private void updatePic() {
         if (this.processor != null) {
             JFileChooser chooser = new JFileChooser(new File("."));
-            chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+            FileFilter imageFilter = new FileNameExtensionFilter(
+                    "Image files", ImageIO.getReaderFileSuffixes());
+
+            chooser.setFileFilter(imageFilter);
             int i = chooser.showOpenDialog(null);
             if (i == JFileChooser.APPROVE_OPTION) {
 
                 try {
                     File file = chooser.getSelectedFile();
-                    String absolutePath = file.getAbsolutePath();
-                    System.out.println(absolutePath);
+                    String imageFile = file.getAbsolutePath();
+                    System.out.println(imageFile);
+                    processor.getNextAnimal().loadImage(imageFile);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
