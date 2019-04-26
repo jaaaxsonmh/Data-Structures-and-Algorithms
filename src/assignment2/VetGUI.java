@@ -104,7 +104,7 @@ public class VetGUI extends JPanel {
 
 
     public static void main(String[] args) {
-        frame = new JFrame("Jack - VET GUI");
+        JFrame frame = new JFrame("Jack - VET GUI");
 
         // kill all threads when frame closes
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
