@@ -18,6 +18,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
+import java.util.Date;
 
 public class VetGUI extends JPanel {
 
@@ -28,12 +29,11 @@ public class VetGUI extends JPanel {
     private JPanel drawPanel;
 
     private int width = 800;
+    private AnimalProcessor processor;
 
 
     public VetGUI() {
         super(new BorderLayout());
-
-
 
         drawPanel = new JPanel();
         drawPanel.setPreferredSize(new Dimension(width, 600));
@@ -68,7 +68,22 @@ public class VetGUI extends JPanel {
         add(buttonPanel, BorderLayout.SOUTH);
     }
 
+    private void updatePanel() {
+        if(this.processor!=null){
+            remove(this.drawPanel);
+            this.drawPanel = this.processor.getNextAnimal().getDisplayPanel();
+            add(drawPanel, BorderLayout.CENTER);
+            revalidate();
+            repaint();
+        }
+    }
+
     private void seeLater() {
+        AnimalPatient animalPatient = processor.releaseAnimal();
+        animalPatient.updateDate(new Date());
+        animalPatient.setPriority(10);
+        processor.addAnimal(animalPatient);
+        updatePanel();
     }
 
     private void newPatient() {
