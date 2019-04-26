@@ -32,7 +32,7 @@ import javax.swing.event.DocumentListener;
  * @author Jack Hosking
  * Student ID: 16932920
  */
-public class AnimalPatient<E> extends ArrayList<E> {
+public class AnimalPatient implements Comparable<AnimalPatient> {
     private String species;
     private String name;
     private ImageIcon image;
@@ -41,35 +41,10 @@ public class AnimalPatient<E> extends ArrayList<E> {
     private String symptoms;
     private String treatment;
     private JPanel displayPanel;
-    private Comparator<? super E> comparator;
-    private int numElements;
-
-    public AnimalPatient() {
-        super();
-        numElements = 0;
-        comparator = null;
-        symptoms = null;
-        treatment = null;
-        dateLastSeen = null;
-        image = null;
-        name = null;
-        species = null;
-    }
 
     public AnimalPatient(String species, String name)
     {
         this(species, name, new Date());
-    }
-
-    public AnimalPatient(int priority, String name, String species)
-    {
-        this.species = species;
-        this.name = name;
-        this.dateLastSeen = dateLastSeen;
-        symptoms = "unknown";
-        treatment = null;
-        image = null;
-        this.priority = priority;
     }
 
     public AnimalPatient(String species, String name, Date dateLastSeen)
@@ -142,6 +117,26 @@ public class AnimalPatient<E> extends ArrayList<E> {
     {   SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
         return name+"("+species+"), priortiy = "+priority+", Last seen: "+simpleDateFormat.format(dateLastSeen);
     }
+
+    public Date getDateLastSeen() {
+        return dateLastSeen;
+    }
+
+    public void setDateLastSeen(Date dateLastSeen) {
+        this.dateLastSeen = dateLastSeen;
+    }
+
+    @Override
+    public int compareTo(AnimalPatient arg0) {
+        // Same priority then order by date
+        // if date is same then arg0 patient is placed behind 'this' patient
+        if(this.getPriority() == arg0.getPriority()) {
+            //TODO: check this
+            return arg0.getDateLastSeen().compareTo(this.getDateLastSeen()) >= 0 ? -1 : 1;
+        }
+        return this.getPriority() > arg0.getPriority() ? 1 : -1;
+    }
+
     private class DisplayPanel extends JPanel implements ChangeListener,DocumentListener
     {
         private JTextArea symptomsArea, treatmentArea;
