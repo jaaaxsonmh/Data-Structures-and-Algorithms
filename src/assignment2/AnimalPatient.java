@@ -89,33 +89,42 @@ public class AnimalPatient<E> extends ArrayList<E> {
         if(displayPanel != null)
             displayPanel.repaint();
     }
+
     public String getName()
     {   return name;
     }
+
     public String getSpecies()
     {   return species;
     }
+
     public void setSymptoms(String symptoms)
     {
         this.symptoms = symptoms;
     }
+
     public String getSymptoms()
     {   return symptoms;
     }
+
     public String getTreatment()
     {   return treatment;
     }
+
     public void setTreatment(String treatment)
     {   this.treatment = treatment;
     }
+
     public int getPriority()
     {
         return priority;
     }
+
     public void setPriority(int priority)
     {
         this.priority = priority;
     }
+
     public void loadImage(String location)
     {
         image = new ImageIcon(location);
