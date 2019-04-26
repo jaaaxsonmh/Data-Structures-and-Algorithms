@@ -176,7 +176,7 @@ public class AnimalPatient implements Comparable<AnimalPatient> {
             JPanel southPanel = new JPanel();
             southPanel.setLayout(new BoxLayout(southPanel,BoxLayout.X_AXIS));
 
-            prioritySlider = new JSlider(JSlider.HORIZONTAL, 1, 10, priority);
+            prioritySlider = new JSlider(JSlider.HORIZONTAL, 1, 10, getPriority());
             prioritySlider.setBorder(BorderFactory.createTitledBorder("Priority Level"));
             prioritySlider.setMajorTickSpacing(1);
             prioritySlider.setPaintLabels(true);

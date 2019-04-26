@@ -80,8 +80,9 @@ public class VetGUI extends JPanel {
 
     private void seeLater() {
         AnimalPatient animalPatient = processor.releaseAnimal();
+        System.out.println(animalPatient);
         animalPatient.updateDate(new Date());
-        animalPatient.setPriority(10);
+        animalPatient.setPriority(9);
         processor.addAnimal(animalPatient);
         updatePanel();
     }
@@ -93,6 +94,25 @@ public class VetGUI extends JPanel {
     }
 
     private void loadXML() {
+        JFileChooser jFileChooser = new JFileChooser(new File("."));
+        int j = jFileChooser.showOpenDialog(null);
+        if(j == JFileChooser.APPROVE_OPTION){
+            File file = jFileChooser.getSelectedFile();
+            try {
+                DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
+                builderFactory.setNamespaceAware(true);
+                builderFactory.setValidating(true);
+                builderFactory.setAttribute(JAXP_SCHEMA_LANGUAGE, W3C_XML_SCHEMA);
+                DocumentBuilder documentBuilder = builderFactory.newDocumentBuilder();
+                //parse input stream
+                Document document = documentBuilder.parse(file);
+                processor = new AnimalProcessor();
+                processor.loadAnimalsFromXML(document);
+                updatePanel();
+            } catch(Exception e) {
+                System.out.println(e.getMessage());
+            }
+        }
     }
 
     private void saveXML() {
