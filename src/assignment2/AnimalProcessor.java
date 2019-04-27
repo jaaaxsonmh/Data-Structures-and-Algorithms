@@ -8,7 +8,6 @@ package src.assignment2;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
-import javax.sound.midi.SysexMessage;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.text.SimpleDateFormat;
@@ -31,7 +30,8 @@ public class AnimalProcessor {
     }
 
     public AnimalPatient getNextAnimal() {
-        return waitList.first();
+            return waitList.first();
+
     }
 
     public AnimalPatient releaseAnimal() {
@@ -41,6 +41,7 @@ public class AnimalProcessor {
     }
 
     public int animalsLeftToProcess() {
+        System.out.println(waitList.size());
         return waitList.size();
     }
 

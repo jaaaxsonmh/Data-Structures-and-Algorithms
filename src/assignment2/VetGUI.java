@@ -36,6 +36,7 @@ public class VetGUI extends JPanel {
     private JButton newPatient, seeLater, release, loadXML, saveXML, updatePic;
     private JPanel drawPanel;
     private JLabel waitList, nameLabel;
+    private JFrame frame;
 
     private int width = 800;
     private AnimalProcessor processor;
@@ -85,7 +86,7 @@ public class VetGUI extends JPanel {
     private void updatePanel() {
         if (this.processor != null) {
             remove(this.drawPanel);
-            this.drawPanel = this.processor.getNextAnimal().getDisplayPanel();
+            this.drawPanel = processor.getNextAnimal().getDisplayPanel();
             add(drawPanel, BorderLayout.CENTER);
 
             JPanel waitListHolder = new JPanel();
@@ -121,6 +122,47 @@ public class VetGUI extends JPanel {
     }
 
     private void newPatient() {
+        try {
+            JDialog dialog = new JDialog(frame, "Enter a new Patient");
+            dialog.setSize(300,300);
+            dialog.setLocationRelativeTo(null);
+
+            String species = (String)JOptionPane.showInputDialog(
+                    frame,
+                    "Enter new patient species.",
+                    "Enter a patient",
+                    JOptionPane.PLAIN_MESSAGE,
+                    null
+                    ,
+                    null
+                    ,
+                    "Enter species");
+
+            String name = (String)JOptionPane.showInputDialog(
+                    frame,
+                    "Enter new patient name",
+                    "Enter a patient",
+                    JOptionPane.PLAIN_MESSAGE,
+                    null
+                    ,
+                    null
+                    ,
+                    "Enter Name");
+
+            if ((species != null) && (species.length() > 0) && (name !=null) && (name.length() > 0)) {
+                AnimalPatient animalPatient = new AnimalPatient(species, name, new Date());
+                System.out.println(animalPatient);
+                if(this.processor != null){
+                    processor.addAnimal(animalPatient);
+                }  else {
+                    this.processor = new AnimalProcessor();
+                    processor.addAnimal(animalPatient);
+                }
+                updatePanel();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void release() {
@@ -248,20 +290,21 @@ public class VetGUI extends JPanel {
 
 
     public static void main(String[] args) {
-        JFrame frame = new JFrame("Jack - VET GUI");
+        VetGUI vetGUI = new VetGUI();
+        vetGUI.frame = new JFrame("Jack - VET GUI");
 
         // kill all threads when frame closes
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.getContentPane().add(new VetGUI());
-        frame.pack();
+        vetGUI.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        vetGUI.frame.getContentPane().add(vetGUI);
+        vetGUI.frame.pack();
 
         // position the frame in the middle of the screen
         Toolkit tk = Toolkit.getDefaultToolkit();
         Dimension screenDimension = tk.getScreenSize();
-        Dimension frameDimension = frame.getSize();
-        frame.setLocation((screenDimension.width - frameDimension.width) / 2,
+        Dimension frameDimension = vetGUI.frame.getSize();
+        vetGUI.frame.setLocation((screenDimension.width - frameDimension.width) / 2,
                 (screenDimension.height - frameDimension.height) / 2);
-        frame.setVisible(true);
+        vetGUI.frame.setVisible(true);
         // now display something while the main thread is still alive
     }
 }
