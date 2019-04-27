@@ -33,9 +33,7 @@ public class VetGUI extends JPanel {
     private static final String W3C_XML_SCHEMA = "http://www.w3.org/2001/XMLSchema";
     private static final String JAXP_SCHEMA_LANGUAGE = "http://java.sun.com/xml/jaxp/properties/schemaLanguage";
 
-    private JButton newPatient, seeLater, release, loadXML, saveXML, updatePic;
     private JPanel drawPanel;
-    private JLabel waitList, nameLabel;
     private JFrame frame;
 
     private int width = 800;
@@ -56,27 +54,27 @@ public class VetGUI extends JPanel {
         add(drawPanel);
 
         JPanel buttonPanel = new JPanel();
-        newPatient = new JButton("New Patient");
+        JButton newPatient = new JButton("New Patient");
         newPatient.addActionListener((action) -> newPatient());
         buttonPanel.add(newPatient);
 
-        seeLater = new JButton("See Later");
+        JButton seeLater = new JButton("See Later");
         seeLater.addActionListener((action) -> seeLater());
         buttonPanel.add(seeLater);
 
-        release = new JButton("Release");
+        JButton release = new JButton("Release");
         release.addActionListener((action) -> release());
         buttonPanel.add(release);
 
-        loadXML = new JButton("Load XML");
+        JButton loadXML = new JButton("Load XML");
         loadXML.addActionListener((action) -> loadXML());
         buttonPanel.add(loadXML);
 
-        saveXML = new JButton("Save XML");
+        JButton saveXML = new JButton("Save XML");
         saveXML.addActionListener((action) -> saveXML());
         buttonPanel.add(saveXML);
 
-        updatePic = new JButton("Update Pic");
+        JButton updatePic = new JButton("Update Pic");
         updatePic.addActionListener((action) -> updatePic());
         buttonPanel.add(updatePic);
 
@@ -92,10 +90,10 @@ public class VetGUI extends JPanel {
             JPanel waitListHolder = new JPanel();
             waitListHolder.setLayout(new GridLayout(2,1));
 
-            waitList = new JLabel("Animals waiting to be seen: "
+            JLabel waitList = new JLabel("Animals waiting to be seen: "
                     + processor.animalsLeftToProcess(), SwingConstants.CENTER);
 
-            nameLabel = new JLabel("DATE/TIME SEEN: " + simpleDateFormat.format(processor.getNextAnimal().getDateLastSeen()) + " - " + processor.getNextAnimal().getName() +
+            JLabel nameLabel = new JLabel("DATE/TIME SEEN: " + simpleDateFormat.format(processor.getNextAnimal().getDateLastSeen()) + " - " + processor.getNextAnimal().getName() +
                     ", [" + processor.getNextAnimal().getSpecies() + "]", SwingConstants.CENTER);
 
             nameLabel.setFont(new Font("Comic Sans", Font.BOLD, 14));
@@ -114,9 +112,8 @@ public class VetGUI extends JPanel {
             AnimalPatient animalPatient = processor.releaseAnimal();
             System.out.println(animalPatient);
             animalPatient.updateDate(new Date());
-            animalPatient.setPriority(9);
+            animalPatient.setPriority(10);
             processor.addAnimal(animalPatient);
-
             updatePanel();
         }
     }
@@ -155,7 +152,7 @@ public class VetGUI extends JPanel {
                 if(this.processor != null){
                     processor.addAnimal(animalPatient);
                 }  else {
-                    this.processor = new AnimalProcessor();
+                    processor = new AnimalProcessor();
                     processor.addAnimal(animalPatient);
                 }
                 updatePanel();
