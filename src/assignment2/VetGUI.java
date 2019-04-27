@@ -124,6 +124,7 @@ public class VetGUI extends JPanel {
             dialog.setSize(300,300);
             dialog.setLocationRelativeTo(null);
 
+            String name = null;
             String species = (String)JOptionPane.showInputDialog(
                     frame,
                     "Enter new patient species.",
@@ -135,16 +136,18 @@ public class VetGUI extends JPanel {
                     ,
                     "Enter species");
 
-            String name = (String)JOptionPane.showInputDialog(
-                    frame,
-                    "Enter new patient name",
-                    "Enter a patient",
-                    JOptionPane.PLAIN_MESSAGE,
-                    null
-                    ,
-                    null
-                    ,
-                    "Enter Name");
+            if(species != null){
+                name = (String)JOptionPane.showInputDialog(
+                        frame,
+                        "Enter new patient name",
+                        "Enter a patient",
+                        JOptionPane.PLAIN_MESSAGE,
+                        null
+                        ,
+                        null
+                        ,
+                        "Enter Name");
+            }
 
             if ((species != null) && (species.length() > 0) && (name !=null) && (name.length() > 0)) {
                 AnimalPatient animalPatient = new AnimalPatient(species, name, new Date());
