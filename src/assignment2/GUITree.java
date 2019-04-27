@@ -16,7 +16,7 @@ public class GUITree extends JPanel implements ActionListener {
 
     private DrawPanel drawPanel;
 
-    private BinarySearchTree<String> bst = new BinarySearchTree<>();
+    private BinarySearchTree<String> binarySearchTree = new BinarySearchTree<>();
     private int width = 800;
 
 
@@ -64,56 +64,56 @@ public class GUITree extends JPanel implements ActionListener {
     }
 
     private void resetVisited() {
-        bst.resetVisited(bst.rootNode);
+        binarySearchTree.resetVisited(binarySearchTree.rootNode);
     }
 
     private void rightRotate() {
         String rotateNode = JOptionPane.showInputDialog("Right Rotation");
-        BinarySearchTree.BinaryTreeNode node = bst.findNode(rotateNode);
-        bst.rightRotate(node);
+        BinarySearchTree<String>.BinaryTreeNode node = binarySearchTree.findNode(rotateNode);
+        binarySearchTree.rightRotate(node);
         System.out.println("\nRight Rotate: " + rotateNode);
     }
 
+
     private void leftRotate() {
         String rotateNode = JOptionPane.showInputDialog("Left Rotation");
-        BinarySearchTree.BinaryTreeNode node = bst.findNode(rotateNode);
-        //UnChecked assignment
-        bst.leftRotate(node);
+        BinarySearchTree<String>.BinaryTreeNode node = binarySearchTree.findNode(rotateNode);
+        binarySearchTree.leftRotate(node);
         System.out.println("\nLeft Rotate: " + rotateNode);
     }
 
     private void inOrderTraverse() {
         System.out.println();
         System.out.print("In Order Traversal: ");
-        bst.startInOrder();
+        binarySearchTree.startInOrder();
     }
 
     private void levelOrderTraverse() {
         System.out.println();
         System.out.print("Level Order Traversal: ");
-        bst.startLevelOrder();
+        binarySearchTree.startLevelOrder();
     }
 
     private void removeNode() {
         String detachNode = JOptionPane.showInputDialog("Remove Node");
-        bst.remove(detachNode);
+        binarySearchTree.remove(detachNode);
         System.out.println("\nRemove: " + detachNode);
     }
 
     private void addNode() {
         String attachNode = JOptionPane.showInputDialog("Add Node");
-        bst.add(attachNode);
+        binarySearchTree.add(attachNode);
         System.out.println("\nAdd: " + attachNode);
     }
 
     private void populateCollection() {
-        bst.add("cat");
-        bst.add("ant");
-        bst.add("cow");
-        bst.add("eel");
-        bst.add("zebra");
-        bst.add("dog");
-        bst.add("fly");
+        binarySearchTree.add("cat");
+        binarySearchTree.add("ant");
+        binarySearchTree.add("cow");
+        binarySearchTree.add("eel");
+        binarySearchTree.add("zebra");
+        binarySearchTree.add("dog");
+        binarySearchTree.add("fly");
     }
 
     @Override
@@ -135,7 +135,7 @@ public class GUITree extends JPanel implements ActionListener {
         public void paintComponent(Graphics g) {
             super.paintComponent(g);
 
-            bst.drawTree(g, width);
+            binarySearchTree.drawTree(g, width);
         }
     }
 
@@ -144,7 +144,7 @@ public class GUITree extends JPanel implements ActionListener {
         JFrame frame = new JFrame("Jack - GUI TREE");
 
         // kill all threads when frame closes
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.getContentPane().add(new GUITree());
         frame.pack();
 

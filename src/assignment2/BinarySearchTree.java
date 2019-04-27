@@ -258,13 +258,12 @@ public class BinarySearchTree<E> extends AbstractSet<E>
     // Purpose is to take a String (Object) and
     // and find its Node counterpart.
     // Catch null pointers if not in bst, or no input.
-    public BinaryTreeNode findNode(Object o) {
+    public BinaryTreeNode findNode(E o) {
         boolean found = false;
-        E element = (E) o; // unchecked, could throw exception
         BinaryTreeNode currentNode = rootNode;
         try {
             while (!found && currentNode != null) {
-                int comparison = compare(currentNode.element, element);
+                int comparison = compare(currentNode.element, o);
                 if (comparison == 0) {
                     found = true;
                 } else if (comparison < 0) {
