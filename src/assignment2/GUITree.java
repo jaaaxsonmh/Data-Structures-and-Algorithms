@@ -14,12 +14,9 @@ import javax.swing.*;
 
 public class GUITree extends JPanel implements ActionListener {
 
-    private JButton addNode, removeNode, levelOrderTraverse, inOrderTraverse, leftRotate, rightRotate, resetVisited;
     private DrawPanel drawPanel;
 
     private BinarySearchTree<String> bst = new BinarySearchTree<>();
-
-
     private int width = 800;
 
 
@@ -30,32 +27,32 @@ public class GUITree extends JPanel implements ActionListener {
         add(drawPanel, BorderLayout.CENTER);
 
         JPanel buttonPanel = new JPanel();
-        addNode = new JButton("Add Node");
-        addNode.addActionListener(this);
+        JButton addNode = new JButton("Add Node");
+        addNode.addActionListener((a) -> addNode());
         buttonPanel.add(addNode);
 
-        removeNode = new JButton("Remove Node");
-        removeNode.addActionListener(this);
+        JButton removeNode = new JButton("Remove Node");
+        removeNode.addActionListener((a) -> removeNode());
         buttonPanel.add(removeNode);
 
-        levelOrderTraverse = new JButton("Level Order Traverse");
-        levelOrderTraverse.addActionListener(this);
+        JButton levelOrderTraverse = new JButton("Level Order Traverse");
+        levelOrderTraverse.addActionListener((a) -> levelOrderTraverse());
         buttonPanel.add(levelOrderTraverse);
 
-        inOrderTraverse = new JButton("In Order Traverse");
-        inOrderTraverse.addActionListener(this);
+        JButton inOrderTraverse = new JButton("In Order Traverse");
+        inOrderTraverse.addActionListener((a) -> inOrderTraverse());
         buttonPanel.add(inOrderTraverse);
 
-        leftRotate = new JButton("Left Rotate");
-        leftRotate.addActionListener(this);
+        JButton leftRotate = new JButton("Left Rotate");
+        leftRotate.addActionListener((a) -> leftRotate());
         buttonPanel.add(leftRotate);
 
-        rightRotate = new JButton("Right Rotate");
-        rightRotate.addActionListener(this);
+        JButton rightRotate = new JButton("Right Rotate");
+        rightRotate.addActionListener((a) -> rightRotate());
         buttonPanel.add(rightRotate);
 
-        resetVisited = new JButton("Reset Visited");
-        resetVisited.addActionListener(this);
+        JButton resetVisited = new JButton("Reset Visited");
+        resetVisited.addActionListener((a) -> resetVisited());
         buttonPanel.add(resetVisited);
 
         add(buttonPanel, BorderLayout.SOUTH);
@@ -64,6 +61,49 @@ public class GUITree extends JPanel implements ActionListener {
 
         Timer timer = new Timer(25, this);
         timer.start();
+    }
+
+    private void resetVisited() {
+        bst.resetVisited(bst.rootNode);
+    }
+
+    private void rightRotate() {
+        String rotateNode = JOptionPane.showInputDialog("Right Rotation");
+        BinarySearchTree.BinaryTreeNode node = bst.findNode(rotateNode);
+        bst.rightRotate(node);
+        System.out.println("\nRight Rotate: " + rotateNode);
+    }
+
+    private void leftRotate() {
+        String rotateNode = JOptionPane.showInputDialog("Left Rotation");
+        BinarySearchTree.BinaryTreeNode node = bst.findNode(rotateNode);
+        //UnChecked assignment
+        bst.leftRotate(node);
+        System.out.println("\nLeft Rotate: " + rotateNode);
+    }
+
+    private void inOrderTraverse() {
+        System.out.println();
+        System.out.print("In Order Traversal: ");
+        bst.startInOrder();
+    }
+
+    private void levelOrderTraverse() {
+        System.out.println();
+        System.out.print("Level Order Traversal: ");
+        bst.startLevelOrder();
+    }
+
+    private void removeNode() {
+        String detachNode = JOptionPane.showInputDialog("Remove Node");
+        bst.remove(detachNode);
+        System.out.println("\nRemove: " + detachNode);
+    }
+
+    private void addNode() {
+        String attachNode = JOptionPane.showInputDialog("Add Node");
+        bst.add(attachNode);
+        System.out.println("\nAdd: " + attachNode);
     }
 
     private void populateCollection() {
@@ -78,51 +118,8 @@ public class GUITree extends JPanel implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        Object source = e.getSource();
-
-        if (source == addNode) {
-            String attachNode = JOptionPane.showInputDialog("Add Node");
-            bst.add(attachNode);
-            System.out.println("\nAdd: " + attachNode);
-        }
-
-        if (source == removeNode) {
-            String detachNode = JOptionPane.showInputDialog("Remove Node");
-            bst.remove(detachNode);
-            System.out.println("\nRemove: " + detachNode);
-        }
-
-        String rotateNode;
-        if (source == leftRotate) {
-            rotateNode = JOptionPane.showInputDialog("Left Rotation");
-            BinarySearchTree.BinaryTreeNode node = bst.findNode(rotateNode);
-            bst.leftRotate(node);
-            System.out.println("\nLeft Rotate: " + rotateNode);
-        }
-
-        if (source == rightRotate) {
-            rotateNode = JOptionPane.showInputDialog("Right Rotation");
-            BinarySearchTree.BinaryTreeNode node = bst.findNode(rotateNode);
-            bst.rightRotate(node);
-            System.out.println("\nRight Rotate: " + rotateNode);
-        }
-
-        if (source == inOrderTraverse) {
-            System.out.println();
-            System.out.print("In Order Traversal: ");
-            bst.startInOrder();
-        }
-
-        if (source == levelOrderTraverse) {
-            System.out.println();
-            System.out.print("Level Order Traversal: ");
-            bst.startLevelOrder();
-        }
-
-        if (source == resetVisited) {
-            bst.resetVisited(bst.rootNode);
-        }
         drawPanel.repaint();
+
     }
 
     private class DrawPanel extends JPanel {
