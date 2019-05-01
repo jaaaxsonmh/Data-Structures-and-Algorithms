@@ -35,6 +35,7 @@ public class VetGUI extends JPanel {
 
     private JPanel drawPanel;
     private JFrame frame;
+    JLabel waitList = new JLabel("", SwingConstants.CENTER);
 
     private int width = 800;
     private AnimalProcessor processor;
@@ -87,20 +88,9 @@ public class VetGUI extends JPanel {
             this.drawPanel = processor.getNextAnimal().getDisplayPanel();
             add(drawPanel, BorderLayout.CENTER);
 
-            JPanel waitListHolder = new JPanel();
-            waitListHolder.setLayout(new GridLayout(2,1));
-
-            JLabel waitList = new JLabel("Animals waiting to be seen: "
-                    + processor.animalsLeftToProcess(), SwingConstants.CENTER);
-
-            JLabel nameLabel = new JLabel("DATE/TIME SEEN: " + simpleDateFormat.format(processor.getNextAnimal().getDateLastSeen()) + " - " + processor.getNextAnimal().getName() +
-                    ", [" + processor.getNextAnimal().getSpecies() + "]", SwingConstants.CENTER);
-
-            nameLabel.setFont(new Font("Comic Sans", Font.BOLD, 14));
-            waitListHolder.add(waitList, BorderLayout.NORTH);
-            waitListHolder.add(nameLabel, BorderLayout.SOUTH);
-            drawPanel.add(waitListHolder, BorderLayout.NORTH);
-
+            waitList.setText("Animals waiting to be seen: "
+                    + processor.animalsLeftToProcess());
+            add(waitList, BorderLayout.NORTH);
             revalidate();
             repaint();
         }
@@ -208,8 +198,8 @@ public class VetGUI extends JPanel {
                     newDocument.setXmlStandalone(true);
 
                     Element root = newDocument.getDocumentElement();
-                    root.setAttribute("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
                     root.setAttribute("xsi:noNamespaceSchemaLocation", "animals.xsd");
+                    root.setAttribute("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
 
                     //For AnimalP animal : processor.getWaitList()
                     // addAnimal(... ... ... );

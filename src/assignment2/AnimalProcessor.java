@@ -18,7 +18,7 @@ import java.util.TreeSet;
 public class AnimalProcessor {
     private static final String JAXP_SCHEMA_LANGUAGE = "http://java.sun.com/xml/jaxp/properties/schemaLanguage";
     private static final String W3C_XML_SCHEMA = "http://www.w3.org/2001/XMLSchema";
-    private TreeSet<AnimalPatient> waitList = new TreeSet<AnimalPatient>();
+    private TreeSet<AnimalPatient> waitList = new TreeSet<>();
     private DOMUtilities domUtilities = new DOMUtilities();
     private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
 
@@ -50,8 +50,8 @@ public class AnimalProcessor {
         Node rootXMLNode = document.getDocumentElement();
         Collection<Node> animals = domUtilities.getAllChildNodes(rootXMLNode, "animal");
 
-        String species, name = "";
-        AnimalPatient animalPatient = null;
+        String species, name;
+        AnimalPatient animalPatient;
         for (Node i : animals) {
             species = domUtilities.getAttributeString(i, "species");
             name = domUtilities.getAttributeString(i, "name");
@@ -134,7 +134,7 @@ public class AnimalProcessor {
         System.out.println("\nUPDATE: all animals with priority of 1 for a priority of 10.");
         processor.waitList.stream().filter(ap -> ap.getPriority()==1).forEach(ap -> ap.setPriority(10));
 
-        processor.waitList.forEach(System.out::println);
+        processor.waitList.stream().forEach(System.out::println);
 
         System.out.println("\nFirst patient in waitlist: " + processor.getNextAnimal());
 
@@ -160,7 +160,7 @@ public class AnimalProcessor {
             // parse the input stream
             Document document = builder.parse(file);
             processor.loadAnimalsFromXML(document);
-            processor.waitList.forEach(System.out::println);
+            processor.waitList.stream().forEach(System.out::println);
         }
         catch (Exception e) {
             System.out.println(e.getMessage());
@@ -174,7 +174,7 @@ public class AnimalProcessor {
         System.out.println("Get next patient: " + processor.getNextAnimal());
         System.out.println("\n==== New WaitList ====");
 
-        processor.waitList.forEach(System.out::println);
+        processor.waitList.stream().forEach(System.out::println);
 
         System.out.println("\nFirst patient in waitlist: " + processor.getNextAnimal());
 
