@@ -59,6 +59,7 @@ public class GUITree extends JPanel implements ActionListener {
 
         populateCollection();
 
+        // only needed to paint the yellow background in traversals
         Timer timer = new Timer(25, this);
         timer.start();
     }
@@ -118,8 +119,9 @@ public class GUITree extends JPanel implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        drawPanel.repaint();
 
+        // only needed for repainting the yellow background in the traversals
+        drawPanel.repaint();
     }
 
     private class DrawPanel extends JPanel {

@@ -6,6 +6,7 @@ import java.util.*;
 
 /**
  * @author Jack Hosking
+ * @author Seth Hall
  * Student ID: 16932920
  */
 
