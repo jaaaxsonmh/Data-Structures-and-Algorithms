@@ -465,9 +465,8 @@ public class BinarySearchTree<E> extends AbstractSet<E>
         } else {
             rotateNode.parent.rightChild = oldRight;
         }
-
-        oldRight.leftChild = rotateNode;
         rotateNode.setParent(oldRight);
+        oldRight.leftChild = rotateNode;
     }
 
 
@@ -488,10 +487,8 @@ public class BinarySearchTree<E> extends AbstractSet<E>
         } else {
             rotateNode.parent.rightChild = oldLeft;
         }
-
-        oldLeft.rightChild = rotateNode;
         rotateNode.setParent(oldLeft);
-
+        oldLeft.rightChild = rotateNode;
     }
 
     public void inOrderTraversal(BinaryTreeNode node) {
