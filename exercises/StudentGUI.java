@@ -3,12 +3,8 @@ package exercises;
 import javax.swing.*;
 import java.awt.*;
 import java.util.Random;
-import java.io.*;
-
 
 public class StudentGUI extends JPanel {
-
-
 
     private JPanel drawPanel;
     private JFrame frame;
