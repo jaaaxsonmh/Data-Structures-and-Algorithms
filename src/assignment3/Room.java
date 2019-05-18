@@ -1,18 +1,18 @@
 package src.assignment3;
 
-public class Room{
+public class Room {
 
-    private boolean	northDoorOpen;
-    private boolean	eastDoorOpen;
-    private boolean	southDoorOpen;
-    private boolean	westDoorOpen;
+    private boolean northDoorOpen;
+    private boolean eastDoorOpen;
+    private boolean southDoorOpen;
+    private boolean westDoorOpen;
 
-    public Room(){
+    public Room() {
 
     }
 
-    public void openDoor(Direction door){
-        switch(door){
+    public void openDoor(Direction door) {
+        switch (door) {
             case NORTH:
                 northDoorOpen = true;
                 break;
@@ -28,12 +28,12 @@ public class Room{
         }
     }
 
-    public boolean hasOpenDoor(){
+    public boolean hasOpenDoor() {
         return northDoorOpen || eastDoorOpen || southDoorOpen || westDoorOpen;
     }
 
-    public boolean isDoorOpen(Direction door){
-        switch(door){
+    public boolean isDoorOpen(Direction door) {
+        switch (door) {
             case NORTH:
                 return northDoorOpen;
             case SOUTH:
