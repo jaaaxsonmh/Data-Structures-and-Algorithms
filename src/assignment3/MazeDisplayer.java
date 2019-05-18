@@ -15,14 +15,14 @@ public class MazeDisplayer extends JPanel implements ActionListener {
 
     public MazeDisplayer() {
         super(new BorderLayout());
-        maze = new Maze(10, 10);
-
+        maze = new Maze(100, 100);
+//        maze = MazeMaker.loadMazeFromDatabase("enormous", "student", "fpn871");
         timer = new Timer(15, this);
         timer.start();
         // create the mouses
         JPanel southPanel = new JPanel();
         loadMazeButton = new JButton("Load Maze from DB");
-        loadMazeButton.addActionListener((a) -> maze = MazeMaker.loadMazeFromDatabase("enormous", "student", "fpn871"));
+        loadMazeButton.addActionListener((a) -> maze = new Maze(2, 100));
         southPanel.add(loadMazeButton);
         performMazeAlg = new JButton("Build Paths");
         performMazeAlg.addActionListener((a) -> MazeMaker.createMazePathsInThread(maze));

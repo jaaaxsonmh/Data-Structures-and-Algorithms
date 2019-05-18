@@ -7,11 +7,11 @@ public class MazeMaker {
     private static Random generator = new Random();
     private static int delay = 0;
 
-    private static final String DRIVER = "com.mysql.jdbc.Driver";
+    private static final String DRIVER = "com.mysql.cj.jdbc.Driver";
     private static final String DB_URL = "jdbc:mysql://raptor2.aut.ac.nz:3306/mazes";
 
     public static void createMazePathsInThread(Maze maze) {
-        delay = 100;
+        delay = 50;
         Thread t = new Thread(() -> {
             int numRows = maze.getNumRows();
             int numCols = maze.getNumCols();
@@ -29,7 +29,7 @@ public class MazeMaker {
         Connection connection = null;
 
         try {
-            Class.forName("com.mysql.jdbc.Driver");
+            Class.forName("com.mysql.cj.jdbc.Driver");
             connection = DriverManager.getConnection("jdbc:mysql://raptor2.aut.ac.nz:3306/mazes", username, password);
         } catch (SQLException e) {
             System.out.print(e.getMessage());
