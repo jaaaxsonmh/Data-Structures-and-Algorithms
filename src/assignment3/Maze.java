@@ -1,8 +1,13 @@
-package src.assignment3;
+package assignment3;
 
+/**
+ *
+ * @author jackh
+ */
 import java.awt.*;
 
 public class Maze {
+
     private int numRows;
     private int numCols;
     private Room[][] room;
@@ -15,9 +20,9 @@ public class Maze {
         this.numRows = numRows;
         this.numCols = numCols;
         this.room = new Room[numRows][numCols];
-        for (int i = 0; i < numRows; i++) {
-            for (int j = 0; j < numCols; j++) {
-                room[i][j] = new Room();
+        for (int x = 0; x < numRows; x++) {
+            for (int z = 0; z < numCols; z++) {
+                room[x][z] = new Room();
             }
         }
     }
@@ -34,6 +39,25 @@ public class Maze {
         return room[row][col].isDoorOpen(door);
     }
 
+    public boolean isInsideMaze(int row, int col, Direction add) {
+        int adjRow = row, adjCol = col;
+        switch (add) {
+            case NORTH:
+                adjRow--;
+                break;
+            case EAST:
+                adjCol++;
+                break;
+            case SOUTH:
+                adjRow++;
+                break;
+            case WEST:
+                adjCol--;
+                break;
+        }
+        return isInsideMaze(adjRow, adjCol);
+    }
+
     public boolean hasOpenDoor(int row, int col) {
         return room[row][col].hasOpenDoor();
     }
@@ -42,54 +66,52 @@ public class Maze {
         room[row][col].openDoor(door);
     }
 
-    public boolean isInsideMaze(int row, int col) {
-        return row >= 0 && col >= 0 && row < numRows && col < numCols;
-    }
-
-    public void drawMaze(Graphics g, int worldWidth, int worldHeight) {
-        int addX = worldWidth / numCols;
-        int addY = worldHeight / numRows;
+    public void drawMaze(Graphics g, int worldwidth, int worldheight) {
+        int addX = worldwidth / numCols;
+        int addZ = worldheight / numRows;
         for (int x = 0; x < numCols; x++) {
-            for (int y = 0; y < numRows; y++) {
+            for (int z = 0; z < numRows; z++) {
 
-                int startX = 5 + x * addX;
-                int endX = startX + addX;
-                int startY = 5 + y * addY;
-                int endY = startY + addY;
+                int startx = 5 + x * addX;
+                int endx = startx + addX;
 
-                Room room = this.room[y][x];
+                int startz = 5 + z * addZ;
+                int endz = startz + addZ;
+                Room room = this.room[z][x];
                 String opened = "";
                 if (!room.isDoorOpen(Direction.NORTH)) {
-                    g.drawLine(startX, startY - 1, endX, startY - 1);
-                    g.drawLine(startX, startY, endX, startY);
-                    g.drawLine(startX, startY + 1, endX, startY + 1);
+                    g.drawLine(startx, startz - 1, endx, startz - 1);
+                    g.drawLine(startx, startz, endx, startz);
+                    g.drawLine(startx, startz + 1, endx, startz + 1);
                     opened += " north";
                 }
                 if (!room.isDoorOpen(Direction.SOUTH)) {
-                    g.drawLine(startX, endY - 1, endX, endY - 1);
-                    g.drawLine(startX, endY, endX, endY);
-                    g.drawLine(startX, endY + 1, endX, endY + 1);
+                    g.drawLine(startx, endz - 1, endx, endz - 1);
+                    g.drawLine(startx, endz, endx, endz);
+                    g.drawLine(startx, endz + 1, endx, endz + 1);
                     opened += " south";
                 }
 
                 if (!room.isDoorOpen(Direction.WEST)) {
-                    g.drawLine(startX - 1, startY, startX - 1, endY);
-                    g.drawLine(startX, startY, startX, endY);
-                    g.drawLine(startX + 1, startY, startX + 1, endY);
+                    g.drawLine(startx - 1, startz, startx - 1, endz);
+                    g.drawLine(startx, startz, startx, endz);
+                    g.drawLine(startx + 1, startz, startx + 1, endz);
                     opened += "\nwest";
                 }
 
                 if (!room.isDoorOpen(Direction.EAST)) {
-                    g.drawLine(endX - 1, startY, endX - 1, endY);
-                    g.drawLine(endX, startY, endX, endY);
-                    g.drawLine(endX + 1, startY, endX + 1, endY);
+                    g.drawLine(endx - 1, startz, endx - 1, endz);
+                    g.drawLine(endx, startz, endx, endz);
+                    g.drawLine(endx + 1, startz, endx + 1, endz);
                     opened += "\neast";
                 }
-                // g.drawString(opened, startX, startY + 10);
-                // g.drawString(x + ":" + y, startX, startY + 20);
+                // g.drawString(opened, startx, startz + 10);
+                // g.drawString(x + ":" + z, startx, startz + 20);
             }
         }
     }
 
-
+    public boolean isInsideMaze(int row, int col) {
+        return row >= 0 && col >= 0 && row < numRows && col < numCols;
+    }
 }

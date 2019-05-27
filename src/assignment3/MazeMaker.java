@@ -1,25 +1,39 @@
-package src.assignment3;
+package assignment3;
 
+/**
+ * A class that builds paths in a maze (with an exit on far left east wall, also
+ * can be run in a thread for animated path building.. Need to ensure both Maze,
+ * Direction and Room done properly.
+ */
 import java.sql.*;
 import java.util.*;
 
+/**
+ *
+ * @author jackh
+ * @auther seth hall
+ */
 public class MazeMaker {
+
     private static Random generator = new Random();
     private static int delay = 0;
 
-    private static final String DRIVER = "com.mysql.cj.jdbc.Driver";
+    private static final String DRIVER = "com.mysql.jdbc.Driver";
     private static final String DB_URL = "jdbc:mysql://raptor2.aut.ac.nz:3306/mazes";
 
     public static void createMazePathsInThread(Maze maze) {
-        delay = 50;
-        Thread t = new Thread(() -> {
-            int numRows = maze.getNumRows();
-            int numCols = maze.getNumCols();
-            int startRow = generator.nextInt(numRows);
-            visitRoom(maze, startRow, 0);
-            // randomly open one door along the eastern wall of maze
-            int exitRow = generator.nextInt(numRows);
-            maze.openDoor(exitRow, numCols - 1, Direction.EAST);
+        delay = 5;
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                int numRows = maze.getNumRows();
+                int numCols = maze.getNumCols();
+                int startRow = generator.nextInt(numRows);
+                visitRoom(maze, startRow, 0);
+                // randomly open one door along the eastern wall of maze
+                int exitRow = generator.nextInt(numRows);
+                maze.openDoor(exitRow, numCols - 1, Direction.EAST);
+            }
         });
         t.start();
     }
@@ -29,17 +43,17 @@ public class MazeMaker {
         Connection connection = null;
 
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            connection = DriverManager.getConnection("jdbc:mysql://raptor2.aut.ac.nz:3306/mazes", username, password);
+            Class.forName(DRIVER);
+            connection = DriverManager.getConnection(DB_URL, username, password);
         } catch (SQLException e) {
             System.out.print(e.getMessage());
         } catch (ClassNotFoundException e) {
             System.out.print("JDBC Driver not found!");
         }
+        // TODO THIS FOR QUESTION 3!!!!
 
         List<String> columns = new ArrayList<String>();
         try {
-            assert connection != null;
             ResultSet rs = connection.prepareStatement("SELECT * FROM `tiny`").executeQuery();
             ResultSetMetaData md = rs.getMetaData();
             int cols = md.getColumnCount();
@@ -110,8 +124,9 @@ public class MazeMaker {
     // opening doors as it moves from room to room
     private static void visitRoom(Maze maze, int row, int col) { // randomize the order in which directions will be moved
         List<Direction> directionList = new ArrayList<Direction>(4);
-        for (Direction direction : Direction.values())
+        for (Direction direction : Direction.values()) {
             directionList.add(direction);
+        }
         Collections.shuffle(directionList);
         Iterator<Direction> iterator = directionList.iterator();
         while (iterator.hasNext()) {
@@ -140,12 +155,11 @@ public class MazeMaker {
                 int oposit = (direction.ordinal() + 2) % 4;
                 Direction op = Direction.values()[oposit];
                 maze.openDoor(adjRow, adjCol, op);
-
                 try {
                     Thread.sleep(delay);
-                    System.out.println(delay);
                 } catch (InterruptedException ex) {
                 }
+
                 visitRoom(maze, adjRow, adjCol);
             }
         }

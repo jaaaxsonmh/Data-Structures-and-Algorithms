@@ -1,5 +1,9 @@
-package src.assignment3;
+package assignment3;
 
+/**
+ *
+ * @author jackh
+ */
 public enum Direction {
-    NORTH, EAST, SOUTH, WEST
+    NORTH, EAST, SOUTH, WEST;
 }

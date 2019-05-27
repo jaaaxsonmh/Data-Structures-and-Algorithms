@@ -1,5 +1,9 @@
-package src.assignment3;
+package assignment3;
 
+/**
+ *
+ * @author jackh
+ */
 public class Room {
 
     private boolean northDoorOpen;
